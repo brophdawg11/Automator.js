@@ -12,12 +12,12 @@ The purpose of an Automator is to accept an Array of steps, and to automate them
     var automator = new Automator();
     automator.automate([ 'right', 1000, 'left', 1000 ]);
 
-While trying to provide some useful defaults, the Automator leaves the behavior of each step entirely up to you.  The behavior of a step is determined by the `typeof` the step (number, string, function, object).  Automator attempts to provide some useful default functionality:
+While trying to provide some useful defaults, the Automator leaves the behavior of each step entirely up to you.  Each step is no more than execution of a bit of JavaScript code, so there are no limitations on what a step can do.  The behavior of a step is determined by the `typeof` the step (number, string, function, object).  Automator attempts to provide some useful default functionality:
 
-* Number: Sleep for N milliseconds with setTimeout
-* String: Simulate a key press for the given key.  Supports letters, numbers, arrows, and a series of standard keys (ctrl, alt, enter, etc.).  Please refer to the full documentation for details.
-* Function: Execute the given function.  If the function returns a jQuery Promise, the following step will be deferred until the Promise is resolved.
-* Object: No default behavior provided
+* *Number*: Sleep for N milliseconds with setTimeout
+* *String*: Simulate a key press for the given key.  Supports letters, numbers, arrows, and a series of standard keys (ctrl, alt, enter, etc.).  Please refer to the full documentation for details.
+* *Function*: Execute the given function.  If the function returns a jQuery Promise, the following step will be deferred until the Promise is resolved.
+* *Object*: No default behavior provided
 
 The behavior of each of these can be customized through the options passed to the Automator constructor:
 
