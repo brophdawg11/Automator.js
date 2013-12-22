@@ -1,9 +1,5 @@
 (function (window, undefined) {
 
-    // TODO:
-    //  - Implement a mini Deferred object to remove jQuery dependency
-    //  - Expose getter functions for inner state?
-
     // Utility function to see if an object is promise-like
     function isPromise(p) {
         return p &&

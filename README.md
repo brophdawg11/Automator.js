@@ -1,7 +1,7 @@
 Automator.js
 ============
 
-A minimal JavaScript library for automating practically anything in Javascript.
+A minimal JavaScript library (2.6k minified) for automating practically anything in Javascript.
 
 [Documentation](https://rawgithub.com/brophdawg11/Automator.js/master/docs/automator.html) |
 [Unit Tests](https://rawgithub.com/brophdawg11/Automator.js/master/tests.html)
@@ -12,7 +12,7 @@ The purpose of an Automator is to accept an Array of steps, and to automate them
     var automator = new Automator();
     automator.automate([ 'right', 1000, 'left', 1000 ]);
 
-While trying to provide some useful defaults, the Automator leaves the behavior of each step entirely up to you.  Each step is no more than execution of a bit of JavaScript code, so there are no limitations on what a step can do.  The behavior of a step is determined by the `typeof` the step (number, string, function, object).  Automator attempts to provide some useful default functionality:
+While trying to provide some useful defaults, the Automator leaves the behavior of each step entirely up to you.  The behavior of a step is determined by the `typeof` the step (number, string, function, object).  Automator attempts to provide some useful default functionality:
 
 * *Number*: Sleep for N milliseconds with setTimeout
 * *String*: Simulate a key press for the given key.  Supports letters, numbers, arrows, and a series of standard keys (ctrl, alt, enter, etc.).  Please refer to the full documentation for details.
@@ -62,10 +62,27 @@ Want to run full automations repeatedly?  This is just as easy:
     // Run the full sequence 3 times
     automator.automate([ 'right', 1000, 'left', 1000 ], 3, sequenceCb);
 
+Want to be asynchronous?  No problem.
+
+    var automator = new Automator();
+
+    function doAsync () {
+        var dfd = new $.Deferred();
+        // Do something asynchronous and resolve deferred
+        return dfd.promise();
+    }
+
+   // The 'right' action will not execute until after the asynchronous operation has completed.
+   automator.automate([doAsync, 'right']);
 
 Additional configuration options:
 
 * *debug* [false] - Boolean value to turn on Automator debugging messages in the console
 * *stepDelay* [0] - Milliseconds to sleep between steps.  Because numbers are treated as delays, this delay is ignored before and after numeric steps.
 * *iterationDelay* [0] - Milliseconds to sleep between sequence iterations
+
+Anticipated, but unimplemented functionality:
+* Pass functions return values from one step to the next, including async functions
+* Remove jQuery dependency with a mini-Deferred-like implementation
+* Add support for module loading systems, including NPM
 
