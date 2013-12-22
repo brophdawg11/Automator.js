@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>automator.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>automator.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="function"><span class="keyword">function</span> <span class="params">(window, undefined)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>TODO:
+ - Implement a mini Deferred object to remove jQuery dependency
+ - Expose getter functions for inner state?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="function"><span class="keyword">function</span> <span class="title">isPromise</span><span class="params">(p)</span> {</span>
+        <span class="keyword">return</span> p &amp;&amp;
+               <span class="keyword">typeof</span> p.done === <span class="string">'function'</span> &amp;&amp;
+               <span class="keyword">typeof</span> p.fail === <span class="string">'function'</span> &amp;&amp;
+               <span class="keyword">typeof</span> p.always === <span class="string">'function'</span> &amp;&amp;
+               <span class="keyword">typeof</span> p.then === <span class="string">'function'</span>;
+    }
+
+    <span class="function"><span class="keyword">function</span> <span class="title">runAfterPromise</span><span class="params">(func, maybePromise)</span> {</span>
+        <span class="keyword">if</span> (isPromise(maybePromise)) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Defer step until the promise is resolved</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            maybePromise.always(func);
+        } <span class="keyword">else</span> {
+            func();
+        }
+    }
+
+    <span class="function"><span class="keyword">function</span> <span class="title">Automator</span><span class="params">(options)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2>Initialization</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> key,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Array of actions to automate</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            actions,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Current action index</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            actionIdx,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Number of iterations to run of the actions array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            numIterations,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Current iteration</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            iterationIdx,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Callback function for each iteration</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            iterationCb,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Final deferred</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            finalDfd,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Have we been killed by the user</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            killed;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Initialize options with default values</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        options = <span class="keyword">typeof</span> options === <span class="string">'object'</span> ? options : {};
+        <span class="keyword">for</span> (key <span class="keyword">in</span> Automator.defaults) {
+            <span class="keyword">if</span> (<span class="keyword">typeof</span> options[key] === <span class="string">'undefined'</span> || options[key === <span class="literal">null</span>]) {
+                options[key] = Automator.defaults[key];
+            }
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h2>Private functions</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">debug</span><span class="params">()</span> {</span>
+            <span class="keyword">if</span> (options.debug) {
+                <span class="keyword">var</span> args = Array.prototype.slice.call(arguments);
+                args.unshift(<span class="string">"Automator.js: "</span>);
+                console.log.apply(console, args);
+            }
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">resetState</span><span class="params">()</span> {</span>
+            actions = [];
+            actionIdx = <span class="number">0</span>;
+            numIterations = <span class="number">1</span>;
+            iterationIdx = <span class="number">0</span>;
+            finalDfd = <span class="keyword">new</span> options.Deferred();
+            killed = <span class="literal">false</span>;
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">getDelayedFunction</span><span class="params">(func, delay)</span> {</span>
+            <span class="keyword">if</span> (<span class="keyword">typeof</span> delay === <span class="string">'number'</span> &amp;&amp; delay &gt; <span class="number">0</span>) {
+                debug(<span class="string">'Sleeping for '</span> + delay + <span class="string">'ms'</span>);
+                <span class="keyword">return</span> setTimeout.bind(<span class="literal">null</span>, func, delay);
+            }
+            <span class="keyword">return</span> func;
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">step</span><span class="params">()</span> {</span>
+            <span class="keyword">var</span> nextAction, action, type, handler, retVal, delay, deferredStep;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Did the user kill us?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (killed) {
+                debug(<span class="string">"was killed by user, exiting."</span>);
+                <span class="keyword">return</span>;
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Are we done with our actions?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (actionIdx &gt;= actions.length) {
+
+                debug(<span class="string">"iteration "</span> + iterationIdx + <span class="string">" completed"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Did we have an iteration callback to run?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (<span class="keyword">typeof</span> iterationCb === <span class="string">'function'</span>) {
+                    debug(<span class="string">"Executing iteration callback"</span>);
+                    retVal = iterationCb(iterationIdx);
+                }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Are we done?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (++iterationIdx &gt;= numIterations) {
+                    debug(<span class="string">"Done with iterations"</span>);
+                    runAfterPromise(finalDfd.resolve, retVal);
+                    <span class="keyword">return</span>;
+                }
+
+                debug(<span class="string">"Automator iteration "</span> + iterationIdx + <span class="string">" ready to start"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Start back at the beginning</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                actionIdx = <span class="number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Prep our next iteration after a delay, if requested</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                deferredStep = getDelayedFunction(step, options.iterationDelay);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Run the next step after a potential promise is resolved</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                runAfterPromise(deferredStep, retVal);
+
+                <span class="keyword">return</span>;
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Grab next action and then increment the counter</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            action = actions[actionIdx++];
+            nextAction = actions[actionIdx];
+
+            <span class="keyword">if</span> (action == <span class="literal">null</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Skip it and move on</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                debug(<span class="string">"Skipping null action"</span>);
+                step();
+                <span class="keyword">return</span>;
+            }
+
+            debug(<span class="string">'Handling action: '</span> + action);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Default delay between steps</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            delay = options.stepDelay;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Pass off to the apropriate handler</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            type = (<span class="keyword">typeof</span> action);
+            <span class="keyword">if</span>      (type === <span class="string">'number'</span>)   {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Don&#39;t back-pad numbers with a delay</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                delay = <span class="number">0</span>;
+                handler = options.doNumber;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">'string'</span>) {
+                handler = options.doString;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">'function'</span>) {
+                handler = options.doFunction;
+            } <span class="keyword">else</span> {
+                <span class="keyword">throw</span> <span class="string">"Unsupported type!"</span>;
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Don&#39;t front-pad numbers with a delay,
+and don&#39;t delay at the end of the array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (<span class="keyword">typeof</span> nextAction === <span class="string">'number'</span> || nextAction == <span class="literal">null</span>) {
+                delay = <span class="number">0</span>;
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Prep our next step after a delay, if requested</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            deferredStep = getDelayedFunction(step, delay);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Run the handler, then move onto the next step, potentially
+after a returned promise resolution</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            retVal = handler(action);
+            runAfterPromise(deferredStep, retVal);
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">expandActions</span><span class="params">(arr)</span> {</span>
+            <span class="keyword">var</span> expanded = [],
+                action,
+                matches,
+                num,
+                i = -<span class="number">1</span>,
+                len = arr.length;
+
+            <span class="keyword">while</span> (++i &lt; len) {
+                action = arr[i];
+                <span class="keyword">if</span> (<span class="keyword">typeof</span> action === <span class="string">'string'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Look for trailing ...x<num></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    matches = action.match(<span class="regexp">/(.*)+x(\d+)$/</span>);
+                    <span class="keyword">if</span> (matches &amp;&amp; matches.length === <span class="number">3</span>) {
+                        action = matches[<span class="number">1</span>];
+                        num = parseInt(matches[<span class="number">2</span>], <span class="number">10</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>Add n duplicates of this string and continue</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                        <span class="keyword">while</span> (num-- &gt; <span class="number">0</span>) { expanded.push(action); }
+                        <span class="keyword">continue</span>;
+                    }
+                }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Copy non-x<num> strings and any non strings straight over</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                expanded.push(action);
+            }
+
+            <span class="keyword">return</span> expanded;
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <h2>Public functions</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">this</span>.automate = <span class="function"><span class="keyword">function</span> <span class="params">(arr, num, cb)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>TODO: Validate input</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            num = (<span class="keyword">typeof</span> num === <span class="string">'number'</span>) ? num : <span class="number">1</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>Wipe the slate clean</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            resetState();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>Create an expanded array of actions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            actions = expandActions(arr);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>Store off the number of iterations</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            numIterations = num;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>Store off the iteration callback function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            iterationCb = cb;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>Go!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            step();
+
+            <span class="keyword">return</span> finalDfd.promise();
+        };
+
+        <span class="keyword">this</span>.kill = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+            killed = <span class="literal">true</span>;
+        };
+
+    }
+
+    Automator.keyCodeMap = {
+        <span class="string">'0'</span>: <span class="number">48</span>,
+        <span class="string">'1'</span>: <span class="number">49</span>,
+        <span class="string">'2'</span>: <span class="number">50</span>,
+        <span class="string">'3'</span>: <span class="number">51</span>,
+        <span class="string">'4'</span>: <span class="number">52</span>,
+        <span class="string">'5'</span>: <span class="number">53</span>,
+        <span class="string">'6'</span>: <span class="number">54</span>,
+        <span class="string">'7'</span>: <span class="number">55</span>,
+        <span class="string">'8'</span>: <span class="number">56</span>,
+        <span class="string">'9'</span>: <span class="number">57</span>,
+        <span class="string">'a'</span>: <span class="number">65</span>,
+        <span class="string">'b'</span>: <span class="number">66</span>,
+        <span class="string">'c'</span>: <span class="number">67</span>,
+        <span class="string">'d'</span>: <span class="number">68</span>,
+        <span class="string">'e'</span>: <span class="number">69</span>,
+        <span class="string">'f'</span>: <span class="number">70</span>,
+        <span class="string">'g'</span>: <span class="number">71</span>,
+        <span class="string">'h'</span>: <span class="number">72</span>,
+        <span class="string">'i'</span>: <span class="number">73</span>,
+        <span class="string">'j'</span>: <span class="number">74</span>,
+        <span class="string">'k'</span>: <span class="number">75</span>,
+        <span class="string">'l'</span>: <span class="number">76</span>,
+        <span class="string">'m'</span>: <span class="number">77</span>,
+        <span class="string">'n'</span>: <span class="number">78</span>,
+        <span class="string">'o'</span>: <span class="number">79</span>,
+        <span class="string">'p'</span>: <span class="number">80</span>,
+        <span class="string">'q'</span>: <span class="number">81</span>,
+        <span class="string">'r'</span>: <span class="number">82</span>,
+        <span class="string">'s'</span>: <span class="number">83</span>,
+        <span class="string">'t'</span>: <span class="number">84</span>,
+        <span class="string">'u'</span>: <span class="number">85</span>,
+        <span class="string">'v'</span>: <span class="number">86</span>,
+        <span class="string">'w'</span>: <span class="number">87</span>,
+        <span class="string">'x'</span>: <span class="number">88</span>,
+        <span class="string">'y'</span>: <span class="number">89</span>,
+        <span class="string">'z'</span>: <span class="number">90</span>,
+        <span class="string">'left'</span>: <span class="number">37</span>,
+        <span class="string">'up'</span>: <span class="number">38</span>,
+        <span class="string">'right'</span>: <span class="number">39</span>,
+        <span class="string">'down'</span>: <span class="number">40</span>,
+        <span class="string">'enter'</span>: <span class="number">13</span>,
+        <span class="string">'tab'</span>: <span class="number">9</span>,
+        <span class="string">'ctrl'</span>: <span class="number">17</span>,
+        <span class="string">'esc'</span>: <span class="number">27</span>,
+        <span class="string">'space'</span>: <span class="number">32</span>
+    };
+
+    Automator.doNumber = <span class="function"><span class="keyword">function</span> <span class="params">(n)</span> {</span>
+        <span class="keyword">var</span> dfd = <span class="keyword">new</span> $.Deferred();
+        setTimeout(dfd.resolve, n);
+        <span class="keyword">return</span> dfd.promise();
+    };
+
+    Automator.doFunction = <span class="function"><span class="keyword">function</span> <span class="params">(func)</span> {</span>
+        <span class="keyword">return</span> func();
+    };
+
+    Automator.doString = <span class="function"><span class="keyword">function</span> <span class="params">(str)</span> {</span>
+        <span class="keyword">var</span> keyCode = Automator.keyCodeMap[str],
+            eventObj;
+
+        <span class="keyword">if</span> (<span class="keyword">typeof</span> keyCode !== <span class="string">'number'</span>) {
+            <span class="keyword">return</span>;
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>From <a href="http://stackoverflow.com/questions/596481/simulate-javascript-key-events">http://stackoverflow.com/questions/596481/simulate-javascript-key-events</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        eventObj = document.createEventObject ?
+                       document.createEventObject() :
+                       document.createEvent(<span class="string">"Events"</span>);
+
+
+        <span class="keyword">if</span> (<span class="keyword">typeof</span> eventObj.initEvent === <span class="string">'function'</span>) {
+            eventObj.initEvent(<span class="string">"keydown"</span>, <span class="literal">true</span>, <span class="literal">true</span>);
+        }
+
+        eventObj.keyCode = keyCode;
+        eventObj.which = keyCode;
+
+        <span class="keyword">if</span> (<span class="keyword">typeof</span> document.dispatchEvent === <span class="string">'function'</span>) {
+            document.dispatchEvent(eventObj);
+        } <span class="keyword">else</span> {
+            document.fireEvent(<span class="string">"onkeydown"</span>, eventObj);
+        }
+    };
+
+    Automator.doObject = <span class="function"><span class="keyword">function</span> <span class="params">(obj)</span> {</span>};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>Default options</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    Automator.defaults = {
+        debug: <span class="literal">false</span>,
+        stepDelay: <span class="number">0</span>,
+        iterationDelay: <span class="number">0</span>,
+        Deferred: $.Deferred,
+        doNumber: Automator.doNumber,
+        doFunction: Automator.doFunction,
+        doString: Automator.doString,
+        doObject: Automator.doObject
+    };
+
+    window.Automator = Automator;
+
+}(<span class="keyword">this</span>));</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

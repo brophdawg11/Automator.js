@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+   <title>Automator.js QUnit Tests</title>
+   <link rel="stylesheet" href="resources/qunit-1.12.0.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="resources/qunit-1.12.0.js"></script>
+  <script src="resources/jquery-1.10.2.min.js"></script>
+  <script src="automator.js"></script>
+  <script>
+      var DELAY = 200;
+
+      asyncTest("Test standard number (timeout) handling", function () {
+          var a = new Automator({ debug: true }),
+              count = 0;
+
+          function inc() { count++; }
+
+          function verify (num) {
+              console.log("Verifying " + count + " === " + num);
+              strictEqual(count, num, "Ensure we have run the appropriate number of steps. ");
+          }
+
+          a.automate([ DELAY, inc, DELAY, inc, DELAY, inc ]);
+
+          setTimeout(verify.bind(null, 0), DELAY * 0.5);
+          setTimeout(verify.bind(null, 1), DELAY * 1.5);
+          setTimeout(verify.bind(null, 2), DELAY * 2.5);
+          setTimeout(verify.bind(null, 3), DELAY * 3.5);
+          setTimeout(start, DELAY * 4);
+      });
+
+      test("Test standard function handling", function () {
+          var a = new Automator(), count = 0;
+
+          function inc() { count++; }
+
+          function verify (num) {
+              strictEqual(count, num, "Ensure we have run the appropriate number of steps. ");
+          }
+
+          a.automate([ verify.bind(null, 0), inc,
+                       verify.bind(null, 1), inc,
+                       verify.bind(null, 2), inc,
+                       verify.bind(null, 3) ]);
+      });
+
+      asyncTest("Test async function handling", function () {
+          var a = new Automator(), count = 0;
+
+          function inc() {
+              var d = new $.Deferred();
+              count++;
+              setTimeout(d.resolve, 500);
+              return d.promise();
+          }
+
+          function verify (num) {
+              strictEqual(count, num, "Ensure we have run the appropriate number of steps. ");
+          }
+
+          a.automate([ verify.bind(null, 0), inc,
+                       verify.bind(null, 1), inc,
+                       verify.bind(null, 2), inc,
+                       verify.bind(null, 3) ]).always(start);
+      });
+
+      asyncTest("Test string handling", function () {
+          var a = new Automator({ stepDelay: 5 }),
+              myKeyMap = {},
+              actions = [],
+              k;
+
+          for (k in Automator.keyCodeMap) {
+              if (Automator.keyCodeMap.hasOwnProperty(k)) {
+                  myKeyMap[Automator.keyCodeMap[k].toString()] = 0;
+                  actions.push(k);
+              }
+          }
+
+          document.addEventListener('keydown', function (e) {
+              myKeyMap[e.keyCode.toString()]++;
+          });
+
+          function verify() {
+              for (k in Automator.keyCodeMap) {
+                  if (Automator.keyCodeMap.hasOwnProperty(k)) {
+                      strictEqual(myKeyMap[Automator.keyCodeMap[k].toString()], 1, "Ensuring we received keycode for " + k);
+                  }
+              }
+              start();
+          }
+
+          a.automate(actions).then(verify);
+      });
+
+      test("Test string handling with trailing ...x<num>", function () {
+          var a, count = 0;
+
+          function inc(str) {
+              count += parseInt(str, 10);
+          }
+
+          function verify (num) {
+              strictEqual(count, num, "Ensure we have run the appropriate number of steps. ");
+          }
+
+          a = new Automator({ doString: inc });
+
+          a.automate([ verify.bind(null, 0), '1x2',
+                       verify.bind(null, 2), '2x2',
+                       verify.bind(null, 6), '3x2',
+                       verify.bind(null, 12) ]);
+      });
+
+      test("Test multiple iterations of an array", function () {
+          var a = new Automator(), count = 0, totalCount = 0;
+
+          function inc() {
+              count++;
+          }
+
+          function reset() {
+              totalCount += count;
+              count = 0;
+          }
+
+          function verify (num) {
+              strictEqual(count, num,
+                          "Ensure we have run the appropriate number of steps. ");
+          }
+
+          a.automate([ verify.bind(null, 0), inc,
+                       verify.bind(null, 1), inc,
+                       verify.bind(null, 2), inc,
+                       verify.bind(null, 3), reset ], 3);
+
+          strictEqual(totalCount, 9,
+                      "Ensure we repeated the array multiple times");
+      });
+
+      test("Test multiple iterations of an array with callback", function () {
+          var a = new Automator(), count = 0, totalCount = 0, iterCount = 0;
+
+          function inc() { count++; }
+
+          function reset() { totalCount += count; count = 0; }
+
+          function verify (num) {
+              strictEqual(count, num,
+                          "Ensure we have run the appropriate number of steps.");
+          }
+
+          function iterCb (idx) {
+              strictEqual(idx, iterCount++,
+                          "Ensure we run the iteraton cb with the right index");
+          }
+
+          a.automate([ verify.bind(null, 0), inc,
+                       verify.bind(null, 1), inc,
+                       verify.bind(null, 2), inc,
+                       verify.bind(null, 3), reset ],
+                     3,
+                     iterCb);
+
+          strictEqual(totalCount, 9, "Ensure we repeated the array multiple times");
+      });
+
+      asyncTest("Test multiple iterations of an array with async callback", function () {
+          var a = new Automator(), count = 0, totalCount = 0, iterCount = 0
+
+          function inc() { count++; }
+
+          function reset() { totalCount += count; count = 0; }
+
+          function verify (num) {
+              console.log("verify");
+              strictEqual(count, num,
+                          "Ensure we have run the appropriate number of steps.");
+          }
+
+          function iterCb (idx) {
+              console.log("iterCb " + idx);
+              strictEqual(idx, iterCount++,
+                          "Ensure we run the iteraton cb with the right index");
+              var dfd = new $.Deferred();
+              setTimeout(dfd.resolve, DELAY);
+              return dfd.promise();
+          }
+
+          function verifyTotal(num) {
+              console.log("Verifying total " + num);
+              strictEqual(totalCount, num, "Ensure we repeated the array multiple times");
+          }
+
+          a.automate([ verify.bind(null, 0), inc,
+                       verify.bind(null, 1), inc,
+                       verify.bind(null, 2), inc,
+                       verify.bind(null, 3), reset ],
+                     3,
+                     iterCb)
+           .done(verifyTotal.bind(null, 9))
+           .always(start);
+
+          setTimeout(verifyTotal.bind(null, 3), DELAY * 0.5);
+          setTimeout(verifyTotal.bind(null, 6), DELAY * 1.5);
+          setTimeout(verifyTotal.bind(null, 9), DELAY * 2.5);
+      });
+
+      asyncTest("Test returned promise execution", function () {
+          var a = new Automator(), count = 0;
+
+          function inc() { count++; }
+          function verify() { strictEqual(count, 3, "Ensure count is correct"); }
+
+          a.automate([ DELAY, inc, DELAY, inc, DELAY, inc ])
+           .always(verify)
+           .always(start);
+      });
+
+      asyncTest("Test Automator.kill()", function () {
+          var a = new Automator(), count = 0;
+
+          function inc() { count++; }
+
+          function verify (num) {
+              strictEqual(count, num, "Ensure we have run the appropriate number of steps. ");
+          }
+
+          a.automate([ DELAY, inc, DELAY, inc, DELAY, inc ]);
+
+          setTimeout(verify.bind(null, 0), DELAY * 0.5);
+          setTimeout(verify.bind(null, 1), DELAY * 1.5);
+          setTimeout(a.kill.bind(a), DELAY * 1.75);
+          setTimeout(verify.bind(null, 1), DELAY * 2.5);
+          setTimeout(verify.bind(null, 1), DELAY * 3.5);
+          setTimeout(start, DELAY * 4);
+      });
+
+      asyncTest("Test stepDelay/iterationDelay", function () {
+          var a = new Automator({ debug: true,
+                                  stepDelay: DELAY,
+                                  iterationDelay: DELAY }),
+              count = 0;
+
+          function inc() { count++; }
+
+          function verify (num) {
+              strictEqual(count, num, "Ensure we have run the appropriate number of steps. ");
+          }
+
+          a.automate([ inc, inc, inc, 1, inc ], 2);
+
+          setTimeout(verify.bind(null, 1), DELAY * 0.5);
+          setTimeout(verify.bind(null, 2), DELAY * 1.5);
+          setTimeout(verify.bind(null, 4), DELAY * 2.5);
+
+          setTimeout(verify.bind(null, 5), DELAY * 3.5);
+          setTimeout(verify.bind(null, 6), DELAY * 4.5);
+          setTimeout(verify.bind(null, 8), DELAY * 5.5);
+
+          setTimeout(start, DELAY * 6);
+        });
+  </script>
+</body>
+</html>
