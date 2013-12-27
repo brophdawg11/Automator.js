@@ -58,10 +58,8 @@ Want to run full automations repeatedly?  This is just as easy:
         console.log("Done with iteraton " + i);
     }
 
-    // The optional second parameter to automate() is how many times to run
-    //   the sequence
-    // The optional third parameter is a callback function to run after each
-    //   sequence
+    // The optional second parameter to automate() is how many times to run the sequence
+    // The optional third parameter is a callback function to run after each sequence
 
     // Run the full sequence 3 times
     automator.automate([ 'right', 1000, 'left', 1000 ], 3, sequenceCb);
@@ -76,8 +74,7 @@ Want to be asynchronous?  No problem.
         return dfd.promise();
     }
 
-    // The 'right' action will not execute until after the asynchronous
-    // operation has completed.
+    // The 'right' action will not execute until after the asynchronous operation has completed.
     automator.automate([doAsync, 'right']);
 
 Additional configuration options:
