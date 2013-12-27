@@ -42,7 +42,7 @@ The behavior of each of these can be customized through the options passed to th
     });
     automator.automate([ 'right', 1, 'left', 1 ]);
 
-## Repetition ##
+### Repetition ###
 Want to run steps repeatedly?  Automator supports repetition at the step level for string values:
 
     // Any string ending in /x[0-9]+/ will be repeated that many times, so:
@@ -64,7 +64,7 @@ Want to run full automations repeatedly?  This is just as easy:
     // Run the full sequence 3 times
     automator.automate([ 'right', 1000, 'left', 1000 ], 3, sequenceCb);
 
-## Async ##
+### Async ###
 
 Want to be asynchronous?  No problem.
 
@@ -79,13 +79,13 @@ Want to be asynchronous?  No problem.
     // The 'right' action will not execute until after the asynchronous operation has completed.
     automator.automate([doAsync, 'right']);
 
-## Additional configuration options ##
+### Additional configuration options ###
 
 * *debug* [false] - Boolean value to turn on Automator debugging messages in the console
 * *stepDelay* [0] - Milliseconds to sleep between steps.  Because numbers are treated as delays, this delay is ignored before and after numeric steps.
 * *iterationDelay* [0] - Milliseconds to sleep between sequence iterations
 
-### A note on key events ###
+#### A note on key events ####
 
 The default behavior for strings (left, right, etc.) is to mimic a keydown event.  For simplicity, keyup events are not sent, but it's very easy to provide a keyup event after a delay.  Something like the following would work:
 
@@ -111,7 +111,7 @@ The default behavior for strings (left, right, etc.) is to mimic a keydown event
         }
     });
 
-### Anticipated, but unimplemented functionality ###
+#### Anticipated, but unimplemented functionality ####
 
 * Lots more cross browser testing.  Currently developed and tested in Chrome 31
 * Pass functions return values from one step to the next, including async functions
