@@ -85,7 +85,7 @@ promise is resolved</p>
             
             <div class="content"><div class='highlight'><pre>            maybePromise.always(func);
         } <span class="keyword">else</span> {
-            func();
+            func(maybePromise);
         }
     }
 
@@ -333,7 +333,7 @@ promise is resolved</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">step</span><span class="params">()</span> {</span>
+            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">step</span><span class="params">(passThroughVal)</span> {</span>
             <span class="keyword">var</span> nextAction, action, type, handler, retVal, delay, deferredStep;</pre></div></div>
             
         </li>
@@ -571,7 +571,7 @@ after a returned promise resolution</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            retVal = handler(action);
+            <div class="content"><div class='highlight'><pre>            retVal = handler.call(<span class="literal">null</span>, action, passThroughVal);
             runAfterPromise(deferredStep, retVal);
         }</pre></div></div>
             
@@ -868,9 +868,9 @@ after a returned promise resolution</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.doNumber = <span class="function"><span class="keyword">function</span> <span class="params">(n)</span> {</span>
+            <div class="content"><div class='highlight'><pre>    Automator.doNumber = <span class="function"><span class="keyword">function</span> <span class="params">(n, passThrough)</span> {</span>
         <span class="keyword">var</span> dfd = <span class="keyword">new</span> $.Deferred();
-        setTimeout(dfd.resolve, n);
+        setTimeout(dfd.resolve.bind(dfd, passThrough), n);
         <span class="keyword">return</span> dfd.promise();
     };</pre></div></div>
             
@@ -887,8 +887,8 @@ after a returned promise resolution</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.doFunction = <span class="function"><span class="keyword">function</span> <span class="params">(func)</span> {</span>
-        <span class="keyword">return</span> func();
+            <div class="content"><div class='highlight'><pre>    Automator.doFunction = <span class="function"><span class="keyword">function</span> <span class="params">(func, passThrough)</span> {</span>
+        <span class="keyword">return</span> func.call(<span class="literal">null</span>, passThrough);
     };</pre></div></div>
             
         </li>
@@ -951,7 +951,7 @@ after a returned promise resolution</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.doString = <span class="function"><span class="keyword">function</span> <span class="params">(str)</span> {</span>
+            <div class="content"><div class='highlight'><pre>    Automator.doString = <span class="function"><span class="keyword">function</span> <span class="params">(str, passThrough)</span> {</span>
         <span class="keyword">var</span> keyCode = Automator.keyCodeMap[str];
 
         <span class="keyword">if</span> (<span class="keyword">typeof</span> keyCode !== <span class="string">'number'</span>) { <span class="keyword">return</span>; }
@@ -972,7 +972,7 @@ after a returned promise resolution</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.doObject = <span class="function"><span class="keyword">function</span> <span class="params">(obj)</span> {</span>};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Automator.doObject = <span class="function"><span class="keyword">function</span> <span class="params">(obj, passThrough)</span> {</span>};</pre></div></div>
             
         </li>
         
