@@ -1,4 +1,29 @@
-(function (window, undefined) {
+/* ========================================================================
+ * Automator.js v0.1
+ * A minimal JavaScript library for automating practically anything
+ * in Javascript.
+ *
+ * Copyright (c) 2013 Matt Brophy (brophy.org)
+ * https://github.com/brophdawg11/Automator.js
+ *
+ * Author: Matt Brophy
+ * Website: http://www.brophy.org/
+ *
+ * Released under the MIT license
+ * https://github.com/brophdawg11/Automator.js/blob/master/LICENSE
+ * ------------------------------------------------------------------------ */
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(factory);
+    } else if (typeof exports === 'object') {
+        // Node.js
+        module.exports = factory();
+    } else {
+        // Browser globals
+        root.Automator = factory();
+    }
+}(this, function () {
 
     // Utility function to see if an object is promise-like
     function isPromise(p) {
@@ -344,6 +369,6 @@
         doObject: Automator.doObject
     };
 
-    window.Automator = Automator;
+    return Automator;
 
-}(this));
+}));

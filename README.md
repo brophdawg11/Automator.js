@@ -115,4 +115,3 @@ The default behavior for strings (left, right, etc.) is to mimic a keydown event
 
 * Lots more cross browser testing.  Currently developed and tested in Chrome 31
 * Remove jQuery dependency with a mini-Deferred-like implementation
-* Add support for module loading systems, including NPM
