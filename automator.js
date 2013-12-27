@@ -16,7 +16,7 @@
             // Defer step until the promise is resolved
             maybePromise.always(func);
         } else {
-            func();
+            func(maybePromise);
         }
     }
 
@@ -89,7 +89,7 @@
         }
 
         // Execute a single step
-        function step() {
+        function step(passThroughVal) {
             var nextAction, action, type, handler, retVal, delay, deferredStep;
 
             // Did the user kill us?
@@ -170,7 +170,7 @@
 
             // Run the handler, then move onto the next step, potentially
             // after a returned promise resolution
-            retVal = handler(action);
+            retVal = handler.call(null, action, passThroughVal);
             runAfterPromise(deferredStep, retVal);
         }
 
@@ -287,15 +287,15 @@
     };
 
     // Default handling of numbers - sleep for specified milliseconds
-    Automator.doNumber = function (n) {
+    Automator.doNumber = function (n, passThrough) {
         var dfd = new $.Deferred();
-        setTimeout(dfd.resolve, n);
+        setTimeout(dfd.resolve.bind(dfd, passThrough), n);
         return dfd.promise();
     };
 
     // Default handling of functions - passthrough execution
-    Automator.doFunction = function (func) {
-        return func();
+    Automator.doFunction = function (func, passThrough) {
+        return func.call(null, passThrough);
     };
 
     // Utility function for simulating a key event
@@ -321,7 +321,7 @@
     };
 
     // Default handling of strings - simulate keypress of the specified key
-    Automator.doString = function (str) {
+    Automator.doString = function (str, passThrough) {
         var keyCode = Automator.keyCodeMap[str];
 
         if (typeof keyCode !== 'number') { return; }
@@ -330,7 +330,7 @@
     };
 
     // No default handling of objects
-    Automator.doObject = function (obj) {};
+    Automator.doObject = function (obj, passThrough) {};
 
     // Default options
     Automator.defaults = {

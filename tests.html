@@ -265,6 +265,47 @@
 
           setTimeout(start, DELAY * 6);
         });
+
+      asyncTest("Test pass-through of function return values", function () {
+          var a = new Automator();
+
+          a.automate([
+              // Pass through 1
+              function () { return 1; },
+
+              // Verify 1 received
+              function (n) {
+                  strictEqual(n, 1, "Ensure we got our pass through value of 1");
+              },
+
+              // Pass through 2, asynchronously
+              function () {
+                  var dfd = new $.Deferred();
+                  setTimeout(dfd.resolve.bind(dfd, 2), DELAY);
+                  return dfd.promise();
+              },
+
+              // Verify 2 received
+              function (n) {
+                  strictEqual(n, 2, "Ensure we got our async pass-through value of 2");
+              },
+
+              // Pass through 3, asynchronously, through a timeout
+              function () {
+                  var dfd = new $.Deferred();
+                  setTimeout(dfd.resolve.bind(dfd, 3), DELAY);
+                  return dfd.promise();
+              },
+
+              DELAY,  // Sleep
+
+              // Verify 2 received
+              function (n) {
+                  strictEqual(n, 3, "Ensure we got our async pass-through value of 2");
+              }
+          ]).then(start);
+      });
+
   </script>
 </body>
 </html>

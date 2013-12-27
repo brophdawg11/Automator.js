@@ -114,6 +114,5 @@ The default behavior for strings (left, right, etc.) is to mimic a keydown event
 #### Anticipated, but unimplemented functionality ####
 
 * Lots more cross browser testing.  Currently developed and tested in Chrome 31
-* Pass functions return values from one step to the next, including async functions
 * Remove jQuery dependency with a mini-Deferred-like implementation
 * Add support for module loading systems, including NPM
