@@ -174,6 +174,7 @@
             runAfterPromise(deferredStep, retVal);
         }
 
+        // Internal function to expand repeated string functionality
         function expandActions(arr) {
             var expanded = [],
                 action,
@@ -229,12 +230,14 @@
             return finalDfd.promise();
         };
 
+        // Kill the automator
         this.kill = function () {
             killed = true;
         };
 
     }
 
+    // Supported string -> keyCode map
     Automator.keyCodeMap = {
         '0': 48,
         '1': 49,
@@ -283,26 +286,22 @@
         'space': 32
     };
 
+    // Default handling of numbers - sleep for specified milliseconds
     Automator.doNumber = function (n) {
         var dfd = new $.Deferred();
         setTimeout(dfd.resolve, n);
         return dfd.promise();
     };
 
+    // Default handling of functions - passthrough execution
     Automator.doFunction = function (func) {
         return func();
     };
 
-    Automator.doString = function (str) {
-        var keyCode = Automator.keyCodeMap[str],
-            eventObj;
-
-        if (typeof keyCode !== 'number') {
-            return;
-        }
-
+    // Utility function for simulating a key event
+    Automator.simulateKeyEvent = function (type, keyCode) {
         // From http://stackoverflow.com/questions/596481/simulate-javascript-key-events
-        eventObj = document.createEventObject ?
+        var eventObj = document.createEventObject ?
                        document.createEventObject() :
                        document.createEvent("Events");
 
@@ -321,6 +320,16 @@
         }
     };
 
+    // Default handling of strings - simulate keypress of the specified key
+    Automator.doString = function (str) {
+        var keyCode = Automator.keyCodeMap[str];
+
+        if (typeof keyCode !== 'number') { return; }
+
+        return Automator.simulateKeyEvent("keydown", keyCode);
+    };
+
+    // No default handling of objects
     Automator.doObject = function (obj) {};
 
     // Default options
