@@ -123,11 +123,17 @@
         function runAfterPromise(func, maybePromise) {
             if (isPromise(maybePromise)) {
                 // Defer step until the promise is resolved
+                debug("Deferring next step until the promise is resolved");
                 maybePromise.always(func);
-            } else if (isArray(maybePromise) && maybePromise.length > 0) {
-                interimActions.unshift(maybePromise);
+            } else if (isArray(maybePromise)) {
+                if (maybePromise.length > 0) {
+                    debug("Received back an array of interim actions, " +
+                          "running them now: ", maybePromise);
+                    interimActions.unshift(maybePromise);
+                }
                 func();
             } else {
+                debug("Passing value through to next step: ", maybePromise);
                 func(maybePromise);
             }
         }

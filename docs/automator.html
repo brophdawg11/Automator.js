@@ -418,11 +418,17 @@ promise is resolved.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                maybePromise.always(func);
-            } <span class="keyword">else</span> <span class="keyword">if</span> (isArray(maybePromise) &amp;&amp; maybePromise.length &gt; <span class="number">0</span>) {
-                interimActions.unshift(maybePromise);
+            <div class="content"><div class='highlight'><pre>                debug(<span class="string">"Deferring next step until the promise is resolved"</span>);
+                maybePromise.always(func);
+            } <span class="keyword">else</span> <span class="keyword">if</span> (isArray(maybePromise)) {
+                <span class="keyword">if</span> (maybePromise.length &gt; <span class="number">0</span>) {
+                    debug(<span class="string">"Received back an array of interim actions, "</span> +
+                          <span class="string">"running them now: "</span>, maybePromise);
+                    interimActions.unshift(maybePromise);
+                }
                 func();
             } <span class="keyword">else</span> {
+                debug(<span class="string">"Passing value through to next step: "</span>, maybePromise);
                 func(maybePromise);
             }
         }</pre></div></div>
