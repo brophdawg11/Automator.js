@@ -126,31 +126,16 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Utility function to run a specified callback, potentially after a
-promise is resolved</p>
+              <p>Utility function to check if an object is an array</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="function"><span class="keyword">function</span> <span class="title">runAfterPromise</span><span class="params">(func, maybePromise)</span> {</span>
-        <span class="keyword">if</span> (isPromise(maybePromise)) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Defer step until the promise is resolved</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            maybePromise.always(func);
-        } <span class="keyword">else</span> {
-            func(maybePromise);
+            <div class="content"><div class='highlight'><pre>    <span class="function"><span class="keyword">function</span> <span class="title">isArray</span><span class="params">(a)</span> {</span>
+        <span class="keyword">if</span> (<span class="string">'isArray'</span> <span class="keyword">in</span> Array) {
+            <span class="keyword">return</span> Array.isArray(a);
         }
+
+        <span class="keyword">return</span> Object.prototype.toString.call(a) === <span class="string">'[object Array]'</span>;
     }
 
     <span class="function"><span class="keyword">function</span> <span class="title">Automator</span><span class="params">(options)</span> {</span></pre></div></div>
@@ -158,15 +143,29 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <h2>Initialization</h2>
 
             </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> key,</pre></div></div>
             
         </li>
         
@@ -177,10 +176,11 @@ promise is resolved</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              
+              <p>Array of actions to automate</p>
+
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> key,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            actions,</pre></div></div>
             
         </li>
         
@@ -191,11 +191,14 @@ promise is resolved</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Array of actions to automate</p>
+              <p>interim actions returned from an executed function, executed
+prior to the next step in &#39;actions&#39;.  Maintained as a LIFO
+stack of arrays of actions.  That way steps during interim
+actions can return more interim actions</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            actions,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            interimActions,</pre></div></div>
             
         </li>
         
@@ -356,6 +359,7 @@ promise is resolved</p>
             
             <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">resetState</span><span class="params">()</span> {</span>
             actions = [];
+            interimActions = [];
             actionIdx = <span class="number">0</span>;
             numIterations = <span class="number">1</span>;
             iterationIdx = <span class="number">0</span>;
@@ -393,12 +397,13 @@ promise is resolved</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>Execute a single step</p>
+              <p>Utility function to run a specified callback, potentially after a
+promise is resolved.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">step</span><span class="params">(passThroughVal)</span> {</span>
-            <span class="keyword">var</span> nextAction, action, type, handler, retVal, delay, deferredStep;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">runAfterPromise</span><span class="params">(func, maybePromise)</span> {</span>
+            <span class="keyword">if</span> (isPromise(maybePromise)) {</pre></div></div>
             
         </li>
         
@@ -408,6 +413,44 @@ promise is resolved</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Defer step until the promise is resolved</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                maybePromise.always(func);
+            } <span class="keyword">else</span> <span class="keyword">if</span> (isArray(maybePromise) &amp;&amp; maybePromise.length &gt; <span class="number">0</span>) {
+                interimActions.unshift(maybePromise);
+                func();
+            } <span class="keyword">else</span> {
+                func(maybePromise);
+            }
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Execute a single step</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">step</span><span class="params">(passThrough)</span> {</span>
+            <span class="keyword">var</span> nextAction, action, type, handler, retVal, delay, deferredStep;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Did the user kill us?</p>
 
@@ -421,11 +464,11 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Are we done with our actions?</p>
 
@@ -438,11 +481,11 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Did we have an iteration callback to run?</p>
 
@@ -456,11 +499,11 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Are we done?</p>
 
@@ -477,11 +520,11 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Start back at the beginning</p>
 
@@ -492,11 +535,11 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Prep our next iteration after a delay, if requested</p>
 
@@ -507,11 +550,11 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Run the next step after a potential promise is resolved</p>
 
@@ -525,29 +568,124 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>Grab next action and then increment the counter</p>
+              <p>Get the next action</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            action = actions[actionIdx++];
-            nextAction = actions[actionIdx];
-
-            <span class="keyword">if</span> (action == <span class="literal">null</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (interimActions.length &gt; <span class="number">0</span>) {</pre></div></div>
             
         </li>
         
         
-        <li id="section-31">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Get from the top array in the stack</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                action = interimActions[<span class="number">0</span>].shift();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>If we just removed the last interim action from this top
+entry in the stack, pop off the empty array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (interimActions[<span class="number">0</span>].length === <span class="number">0</span>) {
+                    interimActions.shift();
+                }
+            } <span class="keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>Increment after grab</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                action = actions[actionIdx++];
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>Peek ahead</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (interimActions.length &gt; <span class="number">0</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>We still have interims</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                nextAction = interimActions[<span class="number">0</span>][<span class="number">0</span>];
+            } <span class="keyword">else</span> {
+                nextAction = actions[actionIdx];
+            }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>Short circuit on bad actions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (action == <span class="literal">null</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>Skip it and move on</p>
 
@@ -563,11 +701,11 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>Pass off to the apropriate handler</p>
 
@@ -587,11 +725,11 @@ promise is resolved</p>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>Don&#39;t front or back pad numbers with a delay,
 and don&#39;t delay at the end of the array</p>
@@ -609,11 +747,11 @@ and don&#39;t delay at the end of the array</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>Prep our next step after a delay, if requested</p>
 
@@ -624,29 +762,29 @@ and don&#39;t delay at the end of the array</p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>Run the handler, then move onto the next step, potentially
 after a returned promise resolution</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            retVal = handler.call(<span class="literal">null</span>, action, passThroughVal);
+            <div class="content"><div class='highlight'><pre>            retVal = handler.call(<span class="literal">null</span>, action, passThrough);
             runAfterPromise(deferredStep, retVal);
         }</pre></div></div>
             
         </li>
         
         
-        <li id="section-36">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Internal function to expand repeated string functionality</p>
 
@@ -667,11 +805,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>Look for trailing ...x<num></p>
 
@@ -685,11 +823,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>Add n duplicates of this string and continue</p>
 
@@ -703,11 +841,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>Copy non-x<num> strings and any non strings straight over</p>
 
@@ -722,11 +860,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <h2>Public functions</h2>
 
@@ -735,11 +873,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               
             </div>
@@ -749,11 +887,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>TODO: Validate input</p>
 
@@ -764,11 +902,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-43">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>Wipe the slate clean</p>
 
@@ -779,11 +917,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-44">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>Create an expanded array of actions</p>
 
@@ -794,11 +932,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-45">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>Store off the number of iterations</p>
 
@@ -809,11 +947,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>Store off the iteration callback function</p>
 
@@ -824,11 +962,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-47">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>Go!</p>
 
@@ -842,11 +980,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-48">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>Kill the automator</p>
 
@@ -861,11 +999,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-49">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>Supported string -&gt; keyCode map</p>
 
@@ -922,11 +1060,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-50">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>Default handling of numbers - sleep for specified milliseconds</p>
 
@@ -941,11 +1079,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-51">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>Default handling of functions - passthrough execution</p>
 
@@ -958,11 +1096,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-52">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>Utility function for simulating a key event</p>
 
@@ -973,11 +1111,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-53">
+        <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>From <a href="http://stackoverflow.com/questions/596481/simulate-javascript-key-events">http://stackoverflow.com/questions/596481/simulate-javascript-key-events</a></p>
 
@@ -1005,11 +1143,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-54">
+        <li id="section-62">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>Default handling of strings - simulate keypress of the specified key</p>
 
@@ -1026,11 +1164,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-55">
+        <li id="section-63">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <p>No default handling of objects</p>
 
@@ -1041,11 +1179,11 @@ after a returned promise resolution</p>
         </li>
         
         
-        <li id="section-56">
+        <li id="section-64">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <p>Default options</p>
 
