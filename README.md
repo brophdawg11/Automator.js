@@ -3,7 +3,7 @@ Automator.js
 
 A minimal JavaScript library (2.6k minified) for automating practically anything in Javascript.
 
-[Documentation](https://rawgithub.com/brophdawg11/Automator.js/master/docs/automator.html) |
+[Annotated Source Code](https://rawgithub.com/brophdawg11/Automator.js/master/docs/automator.html) |
 [Unit Tests](https://rawgithub.com/brophdawg11/Automator.js/master/tests.html)
 
 The purpose of an Automator is to accept an Array of steps, and to automate them for you.  It's that simple.
@@ -42,6 +42,7 @@ The behavior of each of these can be customized through the options passed to th
     });
     automator.automate([ 'right', 1, 'left', 1 ]);
 
+
 ### Repetition ###
 Want to run steps repeatedly?  Automator supports repetition at the step level for string values:
 
@@ -64,9 +65,10 @@ Want to run full automations repeatedly?  This is just as easy:
     // Run the full sequence 3 times
     automator.automate([ 'right', 1000, 'left', 1000 ], 3, sequenceCb);
 
+
 ### Async ###
 
-Want to be asynchronous?  No problem.
+Want to be asynchronous?  No problem.  Any action in an Automator sequence that returns a jQuery promise will cause the following step to wait upon resolution or rejection of the promise.
 
     var automator = new Automator();
 
@@ -79,11 +81,44 @@ Want to be asynchronous?  No problem.
     // The 'right' action will not execute until after the asynchronous operation has completed.
     automator.automate([doAsync, 'right']);
 
+
+### Interim Actions ###
+
+If you need to execute a few dynamic actions, potentially oens thaty rely on state of your applicaton or a previous step, just return an array from an automator function.  This steps will be inserted into the sequence immediately after the current step.
+
+    var automator = new Automator();
+
+    function addSteps () {
+        return ['up', 'down'];
+    }
+
+    // The full sequence will run as: right, up, down, left
+    automator.automate(['right', addSteps, 'left']);
+
+
+### Pass-through values ###
+
+Any return values from automator functions that are not a Promise or an Array will simply be passed through to the next step in the process.
+
+    var automator = new Automator();
+
+    function createVal () {
+        return Math.random();
+    }
+
+    function handleVal(randomNum) {
+        console.log("I got the random number: " + randomNum);
+    }
+
+    automator.automate([createVal, handleVal]);
+
+
 ### Additional configuration options ###
 
 * *debug* [false] - Boolean value to turn on Automator debugging messages in the console
 * *stepDelay* [0] - Milliseconds to sleep between steps.  Because numbers are treated as delays, this delay is ignored before and after numeric steps.
 * *iterationDelay* [0] - Milliseconds to sleep between sequence iterations
+
 
 #### A note on key events ####
 
@@ -110,6 +145,7 @@ The default behavior for strings (left, right, etc.) is to mimic a keydown event
             return dfd.promise();
         }
     });
+
 
 #### Anticipated, but unimplemented functionality ####
 

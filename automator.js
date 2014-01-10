@@ -34,15 +34,13 @@
                typeof p.then === 'function';
     }
 
-    // Utility function to run a specified callback, potentially after a
-    // promise is resolved
-    function runAfterPromise(func, maybePromise) {
-        if (isPromise(maybePromise)) {
-            // Defer step until the promise is resolved
-            maybePromise.always(func);
-        } else {
-            func(maybePromise);
+    // Utility function to check if an object is an array
+    function isArray(a) {
+        if ('isArray' in Array) {
+            return Array.isArray(a);
         }
+
+        return Object.prototype.toString.call(a) === '[object Array]';
     }
 
     function Automator(options) {
@@ -54,6 +52,12 @@
 
             // Array of actions to automate
             actions,
+
+            // interim actions returned from an executed function, executed
+            // prior to the next step in 'actions'.  Maintained as a LIFO
+            // stack of arrays of actions.  That way steps during interim
+            // actions can return more interim actions
+            interimActions,
 
             // Current action index
             actionIdx,
@@ -97,6 +101,7 @@
         // Reset all internal state variables
         function resetState() {
             actions = [];
+            interimActions = [];
             actionIdx = 0;
             numIterations = 1;
             iterationIdx = 0;
@@ -113,8 +118,22 @@
             return func;
         }
 
+        // Utility function to run a specified callback, potentially after a
+        // promise is resolved.
+        function runAfterPromise(func, maybePromise) {
+            if (isPromise(maybePromise)) {
+                // Defer step until the promise is resolved
+                maybePromise.always(func);
+            } else if (isArray(maybePromise) && maybePromise.length > 0) {
+                interimActions.unshift(maybePromise);
+                func();
+            } else {
+                func(maybePromise);
+            }
+        }
+
         // Execute a single step
-        function step(passThroughVal) {
+        function step(passThrough) {
             var nextAction, action, type, handler, retVal, delay, deferredStep;
 
             // Did the user kill us?
@@ -155,10 +174,30 @@
                 return;
             }
 
-            // Grab next action and then increment the counter
-            action = actions[actionIdx++];
-            nextAction = actions[actionIdx];
+            // Get the next action
+            if (interimActions.length > 0) {
+                // Get from the top array in the stack
+                action = interimActions[0].shift();
 
+                // If we just removed the last interim action from this top
+                // entry in the stack, pop off the empty array
+                if (interimActions[0].length === 0) {
+                    interimActions.shift();
+                }
+            } else {
+                // Increment after grab
+                action = actions[actionIdx++];
+            }
+
+            // Peek ahead
+            if (interimActions.length > 0) {
+                // We still have interims
+                nextAction = interimActions[0][0];
+            } else {
+                nextAction = actions[actionIdx];
+            }
+
+            // Short circuit on bad actions
             if (action == null) {
                 // Skip it and move on
                 debug("Skipping null action");
@@ -195,7 +234,7 @@
 
             // Run the handler, then move onto the next step, potentially
             // after a returned promise resolution
-            retVal = handler.call(null, action, passThroughVal);
+            retVal = handler.call(null, action, passThrough);
             runAfterPromise(deferredStep, retVal);
         }
 

@@ -306,6 +306,39 @@
           ]).then(start);
       });
 
+      asyncTest("Test returning of interim actions", function () {
+          var a = new Automator(), count = 0;
+
+          function inc()  { count++; }
+
+          function verify(n) {
+              strictEqual(count, n, "Ensure we have the right count (" + n + ")");
+          }
+
+          a.automate([
+              inc,
+
+              verify.bind(null, 1),
+
+              function() {
+                  return [
+                      inc,
+                      verify.bind(null, 2),
+                      function () { return [inc, inc, inc]; },
+                      verify.bind(null, 5),
+                      inc
+                  ];
+              },
+
+              verify.bind(null, 6),
+
+              inc,
+
+              verify.bind(null, 7)
+
+          ]).then(start);
+      });
+
   </script>
 </body>
 </html>
