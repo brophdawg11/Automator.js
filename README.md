@@ -68,7 +68,7 @@ Want to run full automations repeatedly?  This is just as easy:
 
 ### Async ###
 
-Want to be asynchronous?  No problem.  Any action in an Automator sequence that returns a jQuery promise will cause the following step to wait upon resolution or rejection of the promise.
+Want to be asynchronous?  No problem.  Any step in an Automator sequence that returns a jQuery promise will cause the following step to wait upon resolution or rejection of the promise.
 
     var automator = new Automator();
 
@@ -78,13 +78,13 @@ Want to be asynchronous?  No problem.  Any action in an Automator sequence that 
         return dfd.promise();
     }
 
-    // The 'right' action will not execute until after the asynchronous operation has completed.
+    // The 'right' step will not execute until after the asynchronous operation has completed.
     automator.automate([doAsync, 'right']);
 
 
-### Interim Actions ###
+### Interim steps ###
 
-If you need to execute a few dynamic actions, potentially oens thaty rely on state of your applicaton or a previous step, just return an array from an automator function.  This steps will be inserted into the sequence immediately after the current step.
+If you need to execute a few dynamic steps, potentially ones that rely on the state of your applicaton or a previous step, just return an array from an Automator step.  This array of steps will be inserted into the sequence immediately after the current step.
 
     var automator = new Automator();
 
@@ -98,7 +98,7 @@ If you need to execute a few dynamic actions, potentially oens thaty rely on sta
 
 ### Pass-through values ###
 
-Any return values from automator functions that are not a Promise or an Array will simply be passed through to the next step in the process.
+Any return values from Automator steps that are not a Promise or an Array will simply be passed through to the next step in the process.
 
     var automator = new Automator();
 
