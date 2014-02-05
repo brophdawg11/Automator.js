@@ -113,8 +113,7 @@
         <span class="keyword">return</span> p &amp;&amp;
                <span class="keyword">typeof</span> p.done === <span class="string">'function'</span> &amp;&amp;
                <span class="keyword">typeof</span> p.fail === <span class="string">'function'</span> &amp;&amp;
-               <span class="keyword">typeof</span> p.always === <span class="string">'function'</span> &amp;&amp;
-               <span class="keyword">typeof</span> p.then === <span class="string">'function'</span>;
+               <span class="keyword">typeof</span> p.always === <span class="string">'function'</span>;
     }</pre></div></div>
             
         </li>
@@ -1077,7 +1076,7 @@ after a returned promise resolution</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    Automator.doNumber = <span class="function"><span class="keyword">function</span> <span class="params">(n, passThrough)</span> {</span>
-        <span class="keyword">var</span> dfd = <span class="keyword">new</span> $.Deferred();
+        <span class="keyword">var</span> dfd = <span class="keyword">new</span> Automator.MiniDeferred();
         setTimeout(dfd.resolve.bind(dfd, passThrough), n);
         <span class="keyword">return</span> dfd.promise();
     };</pre></div></div>
@@ -1180,7 +1179,62 @@ after a returned promise resolution</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.doObject = <span class="function"><span class="keyword">function</span> <span class="params">(obj, passThrough)</span> {</span>};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Automator.doObject = <span class="function"><span class="keyword">function</span> <span class="params">(obj, passThrough)</span> {</span>};
+
+    Automator.MiniDeferred = <span class="function"><span class="keyword">function</span> <span class="title">MiniDeferred</span><span class="params">()</span> {</span>
+      <span class="keyword">var</span> callbacks = [],
+          currentState = <span class="number">0</span>,
+          currentArgs;
+
+      <span class="function"><span class="keyword">function</span> <span class="title">go</span><span class="params">()</span> {</span>
+        <span class="keyword">var</span> cb;
+        <span class="keyword">while</span> (callbacks.length &gt; <span class="number">0</span>) {
+          cb = callbacks.shift();
+          <span class="keyword">if</span> (cb.state === currentState) {
+            cb.func.apply(<span class="keyword">this</span>, currentArgs);
+          }
+        }
+      }
+
+      <span class="function"><span class="keyword">function</span> <span class="title">addCallback</span><span class="params">(type, async, func)</span> {</span>
+        <span class="keyword">if</span> (<span class="keyword">typeof</span> func === <span class="string">'function'</span>) {
+          <span class="keyword">var</span> cb = { state: type, async: async, func: func };
+          callbacks.push(cb);
+          <span class="keyword">if</span> (currentState !== <span class="number">0</span>) { go(); }
+        }
+        <span class="keyword">return</span> <span class="keyword">this</span>;
+      }
+
+      <span class="function"><span class="keyword">function</span> <span class="title">changeState</span><span class="params">(s)</span> {</span>
+        <span class="keyword">if</span> (currentState !== <span class="number">0</span>) { <span class="keyword">return</span>; }
+        currentState = s;
+        currentArgs = Array.prototype.slice.call(arguments, <span class="number">1</span>);
+        go();
+        <span class="keyword">return</span> <span class="keyword">this</span>;
+      }
+
+      <span class="keyword">this</span>.resolve = changeState.bind(<span class="keyword">this</span>, <span class="number">1</span>);
+      <span class="keyword">this</span>.reject = changeState.bind(<span class="keyword">this</span>, <span class="number">2</span>);
+
+      <span class="keyword">this</span>.promise = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">return</span> {
+          done: <span class="keyword">this</span>.done.bind(<span class="keyword">this</span>),
+          fail: <span class="keyword">this</span>.fail.bind(<span class="keyword">this</span>),
+          always: <span class="keyword">this</span>.always.bind(<span class="keyword">this</span>)
+        };
+      };
+
+      <span class="keyword">this</span>.done = addCallback.bind(<span class="keyword">this</span>, <span class="number">1</span>, <span class="literal">false</span>);
+      <span class="keyword">this</span>.fail = addCallback.bind(<span class="keyword">this</span>, <span class="number">2</span>, <span class="literal">false</span>);
+
+      <span class="keyword">this</span>.always = <span class="function"><span class="keyword">function</span> <span class="params">(func)</span> {</span>
+        <span class="keyword">this</span>.done.call(<span class="keyword">this</span>, func);
+        <span class="keyword">this</span>.fail.call(<span class="keyword">this</span>, func);
+        <span class="keyword">return</span> <span class="keyword">this</span>;
+      };
+
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    };</pre></div></div>
             
         </li>
         
@@ -1199,7 +1253,7 @@ after a returned promise resolution</p>
         debug: <span class="literal">false</span>,
         stepDelay: <span class="number">0</span>,
         iterationDelay: <span class="number">0</span>,
-        Deferred: $.Deferred,
+        Deferred: Automator.MiniDeferred,
         doNumber: Automator.doNumber,
         doFunction: Automator.doFunction,
         doString: Automator.doString,

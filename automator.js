@@ -30,8 +30,7 @@
         return p &&
                typeof p.done === 'function' &&
                typeof p.fail === 'function' &&
-               typeof p.always === 'function' &&
-               typeof p.then === 'function';
+               typeof p.always === 'function';
     }
 
     // Utility function to check if an object is an array
@@ -358,7 +357,7 @@
 
     // Default handling of numbers - sleep for specified milliseconds
     Automator.doNumber = function (n, passThrough) {
-        var dfd = new $.Deferred();
+        var dfd = new Automator.MiniDeferred();
         setTimeout(dfd.resolve.bind(dfd, passThrough), n);
         return dfd.promise();
     };
@@ -402,12 +401,67 @@
     // No default handling of objects
     Automator.doObject = function (obj, passThrough) {};
 
+    Automator.MiniDeferred = function MiniDeferred() {
+      var callbacks = [],
+          currentState = 0,
+          currentArgs;
+
+      function go() {
+        var cb;
+        while (callbacks.length > 0) {
+          cb = callbacks.shift();
+          if (cb.state === currentState) {
+            cb.func.apply(this, currentArgs);
+          }
+        }
+      }
+
+      function addCallback(type, async, func) {
+        if (typeof func === 'function') {
+          var cb = { state: type, async: async, func: func };
+          callbacks.push(cb);
+          if (currentState !== 0) { go(); }
+        }
+        return this;
+      }
+
+      function changeState(s) {
+        if (currentState !== 0) { return; }
+        currentState = s;
+        currentArgs = Array.prototype.slice.call(arguments, 1);
+        go();
+        return this;
+      }
+
+      this.resolve = changeState.bind(this, 1);
+      this.reject = changeState.bind(this, 2);
+
+      this.promise = function () {
+        return {
+          done: this.done.bind(this),
+          fail: this.fail.bind(this),
+          always: this.always.bind(this)
+        };
+      };
+
+      this.done = addCallback.bind(this, 1, false);
+      this.fail = addCallback.bind(this, 2, false);
+
+      this.always = function (func) {
+        this.done.call(this, func);
+        this.fail.call(this, func);
+        return this;
+      };
+
+      return this;
+    };
+
     // Default options
     Automator.defaults = {
         debug: false,
         stepDelay: 0,
         iterationDelay: 0,
-        Deferred: $.Deferred,
+        Deferred: Automator.MiniDeferred,
         doNumber: Automator.doNumber,
         doFunction: Automator.doFunction,
         doString: Automator.doString,

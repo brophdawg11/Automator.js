@@ -24,7 +24,7 @@ The behavior of each of these can be customized through the options passed to th
     // Lets treat numbers as seconds instead of milliseconds
     var automator = new Automator({
         doNumber: function (n) {
-            var dfd = new $.Deferred();
+            var dfd = new Automator.MiniDeferred();
             setTimeout(dfd.resolve, n * 1000);
             return dfd.promise();
         },
@@ -66,9 +66,31 @@ Want to run full automations repeatedly?  This is just as easy:
     automator.automate([ 'right', 1000, 'left', 1000 ], 3, sequenceCb);
 
 
+Want to do something at the very end of the entire, potentially repeated,
+sequence?  The automate() function returns a Promise-esque object you can
+hook into:
+
+    // Run the full sequence 3 times
+    automator.automate([ 'right', 1000, 'left', 1000 ], 3).then(function () {
+      console.log("I'm all done!");
+    });
+
+*Note:* This Promise-esque object is by no means a full-featured promise object.
+In order to avoid dependencies, Automator has it's own Automator.MiniDeferred implementation that simply implements basic resolve/reject/done/fail/always callbacks.  If you would like to use a more full-featured implementation,
+simply specify that implemnentation in options.Deferred.  The Deferred object is expected to implement the same API as Automator.MiniDeferred.  For example:
+
+    var automator = new Automator({
+        Deferred: $.Deferred
+    });
+
+    a.automate(['left', 'right'])
+    // Returns a jQuery Promise
+
+
 ### Async ###
 
-Want to be asynchronous?  No problem.  Any step in an Automator sequence that returns a jQuery promise will cause the following step to wait upon resolution or rejection of the promise.
+Want to be asynchronous?  No problem.  Any step in an Automator sequence that returns a jQuery Deferred-esque object will cause the following step to wait
+upon resolution or rejection of the promise.
 
     var automator = new Automator();
 
@@ -80,7 +102,6 @@ Want to be asynchronous?  No problem.  Any step in an Automator sequence that re
 
     // The 'right' step will not execute until after the asynchronous operation has completed.
     automator.automate([doAsync, 'right']);
-
 
 ### Interim steps ###
 
@@ -127,7 +148,7 @@ The default behavior for strings (left, right, etc.) is to mimic a keydown event
     var automator = new Automator({
         doString: function(str) {
             var keyCode = Automator.keyCodeMap[str],
-                dfd = new $.Deferred();
+                dfd = new Automator.MiniDeferred();
 
             if (typeof keyCode !== 'number') { return; }
 
@@ -150,4 +171,3 @@ The default behavior for strings (left, right, etc.) is to mimic a keydown event
 #### Anticipated, but unimplemented functionality ####
 
 * Lots more cross browser testing.  Currently developed and tested in Chrome 31
-* Remove jQuery dependency with a mini-Deferred-like implementation
