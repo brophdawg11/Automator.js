@@ -1,0 +1,25 @@
+{
+  "name": "automator",
+  "main": "automator.min.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/brophdawg11/Automator.js",
+  "authors": [
+    "Matt Brophy <matt@brophy.org>"
+  ],
+  "description": "A minimal JavaScript library for automating practically anything",
+  "keywords": [
+    "automate",
+    "automation",
+    "unit",
+    "testing"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "*.sublime*"
+  ]
+}
