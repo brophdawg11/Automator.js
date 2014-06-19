@@ -1,3 +1,3 @@
 #!/bin/bash
-yuicompressor automator.js -o automator.min.js
+uglifyjs automator.js -mo automator.min.js
 docco automator.js
