@@ -24,5 +24,13 @@
   "bugs": {
     "url": "https://github.com/brophdawg11/Automator.js/issues"
   },
-  "homepage": "https://github.com/brophdawg11/Automator.js"
+  "homepage": "https://github.com/brophdawg11/Automator.js",
+  "devDependencies": {
+      "docco": "^0.6.x",
+      "uglify-js": "^2.4.x"
+  },
+  "scripts": {
+      "build": "uglifyjs automator.js -mo automator.min.js",
+      "doc": "docco automator.js"
+  }
 }
