@@ -1,7 +1,9 @@
 Automator.js
 ============
 
-A minimal JavaScript library (3.2k minified) for automating practically anything in Javascript.
+![Build Status](https://travis-ci.org/brophdawg11/Automator.js.svg?branch=master)
+
+A minimal JavaScript library (3.7k minified) for automating practically anything in Javascript.
 
 [Annotated Source Code](https://rawgithub.com/brophdawg11/Automator.js/master/docs/automator.html) |
 [Unit Tests](https://rawgithub.com/brophdawg11/Automator.js/master/tests.html)
