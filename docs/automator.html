@@ -30,8 +30,8 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="comment">/* ========================================================================
- * Automator.js v0.1
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* ========================================================================
+ * Automator.js v0.1.1
  * A minimal JavaScript library for automating practically anything
  * in Javascript.
  *
@@ -44,8 +44,8 @@
  * Released under the MIT license
  * https://github.com/brophdawg11/Automator.js/blob/master/LICENSE
  * ------------------------------------------------------------------------ */</span>
-(<span class="function"><span class="keyword">function</span> <span class="params">(root, factory)</span> {</span>
-    <span class="keyword">if</span> (<span class="keyword">typeof</span> define === <span class="string">'function'</span> &amp;&amp; define.amd) {</pre></div></div>
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(root, factory)</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">'function'</span> &amp;&amp; define.amd) {</pre></div></div>
             
         </li>
         
@@ -61,7 +61,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>        define(factory);
-    } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> exports === <span class="string">'object'</span>) {</pre></div></div>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">'object'</span>) {</pre></div></div>
             
         </li>
         
@@ -77,7 +77,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>        module.exports = factory();
-    } <span class="keyword">else</span> {</pre></div></div>
+    } <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -94,7 +94,7 @@
             
             <div class="content"><div class='highlight'><pre>        root.Automator = factory();
     }
-}(<span class="keyword">this</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span></pre></div></div>
+}(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
             
         </li>
         
@@ -109,11 +109,11 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="function"><span class="keyword">function</span> <span class="title">isPromise</span><span class="params">(p)</span> {</span>
-        <span class="keyword">return</span> p &amp;&amp;
-               <span class="keyword">typeof</span> p.done === <span class="string">'function'</span> &amp;&amp;
-               <span class="keyword">typeof</span> p.fail === <span class="string">'function'</span> &amp;&amp;
-               <span class="keyword">typeof</span> p.always === <span class="string">'function'</span>;
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isPromise</span><span class="hljs-params">(p)</span> {</span>
+        <span class="hljs-keyword">return</span> p &amp;&amp;
+               <span class="hljs-keyword">typeof</span> p.done === <span class="hljs-string">'function'</span> &amp;&amp;
+               <span class="hljs-keyword">typeof</span> p.fail === <span class="hljs-string">'function'</span> &amp;&amp;
+               <span class="hljs-keyword">typeof</span> p.always === <span class="hljs-string">'function'</span>;
     }</pre></div></div>
             
         </li>
@@ -129,15 +129,15 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="function"><span class="keyword">function</span> <span class="title">isArray</span><span class="params">(a)</span> {</span>
-        <span class="keyword">if</span> (<span class="string">'isArray'</span> <span class="keyword">in</span> Array) {
-            <span class="keyword">return</span> Array.isArray(a);
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isArray</span><span class="hljs-params">(a)</span> {</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-string">'isArray'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">Array</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">Array</span>.isArray(a);
         }
 
-        <span class="keyword">return</span> Object.prototype.toString.call(a) === <span class="string">'[object Array]'</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.prototype.toString.call(a) === <span class="hljs-string">'[object Array]'</span>;
     }
 
-    <span class="function"><span class="keyword">function</span> <span class="title">Automator</span><span class="params">(options)</span> {</span></pre></div></div>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Automator</span><span class="hljs-params">(options)</span> {</span></pre></div></div>
             
         </li>
         
@@ -145,10 +145,10 @@
         <li id="section-7">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <h2>Initialization</h2>
+              <h2 id="initialization">Initialization</h2>
 
             </div>
             
@@ -164,7 +164,8 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> key,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+        <span class="hljs-keyword">var</span> key,</pre></div></div>
             
         </li>
         
@@ -191,7 +192,7 @@
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>interim actions returned from an executed function, executed
-prior to the next step in &#39;actions&#39;.  Maintained as a LIFO
+prior to the next step in ‘actions’.  Maintained as a LIFO
 stack of arrays of actions.  That way steps during interim
 actions can return more interim actions</p>
 
@@ -302,9 +303,9 @@ actions can return more interim actions</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        options = <span class="keyword">typeof</span> options === <span class="string">'object'</span> ? options : {};
-        <span class="keyword">for</span> (key <span class="keyword">in</span> Automator.defaults) {
-            <span class="keyword">if</span> (<span class="keyword">typeof</span> options[key] === <span class="string">'undefined'</span> || options[key === <span class="literal">null</span>]) {
+            <div class="content"><div class='highlight'><pre>        options = <span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'object'</span> ? options : {};
+        <span class="hljs-keyword">for</span> (key <span class="hljs-keyword">in</span> Automator.defaults) {
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options[key] === <span class="hljs-string">'undefined'</span> || options[key === <span class="hljs-literal">null</span>]) {
                 options[key] = Automator.defaults[key];
             }
         }</pre></div></div>
@@ -315,10 +316,10 @@ actions can return more interim actions</p>
         <li id="section-18">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <h2>Private functions</h2>
+              <h2 id="private-functions">Private functions</h2>
 
             </div>
             
@@ -331,17 +332,8 @@ actions can return more interim actions</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>Logging function</p>
-
+              
             </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">debug</span><span class="params">()</span> {</span>
-            <span class="keyword">if</span> (options.debug) {
-                <span class="keyword">var</span> args = Array.prototype.slice.call(arguments);
-                args.unshift(<span class="string">"Automator.js: "</span>);
-                console.log.apply(console, args);
-            }
-        }</pre></div></div>
             
         </li>
         
@@ -352,18 +344,16 @@ actions can return more interim actions</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>Reset all internal state variables</p>
+              <p>Logging function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">resetState</span><span class="params">()</span> {</span>
-            actions = [];
-            interimActions = [];
-            actionIdx = <span class="number">0</span>;
-            numIterations = <span class="number">1</span>;
-            iterationIdx = <span class="number">0</span>;
-            finalDfd = <span class="keyword">new</span> options.Deferred();
-            killed = <span class="literal">false</span>;
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debug</span><span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">if</span> (options.debug) {
+                <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>);
+                args.unshift(<span class="hljs-string">"Automator.js: "</span>);
+                console.log.apply(console, args);
+            }
         }</pre></div></div>
             
         </li>
@@ -375,16 +365,18 @@ actions can return more interim actions</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>Return a function to be run after the specified delay</p>
+              <p>Reset all internal state variables</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">getDelayedFunction</span><span class="params">(func, delay)</span> {</span>
-            <span class="keyword">if</span> (<span class="keyword">typeof</span> delay === <span class="string">'number'</span> &amp;&amp; delay &gt; <span class="number">0</span>) {
-                debug(<span class="string">'Sleeping for '</span> + delay + <span class="string">'ms'</span>);
-                <span class="keyword">return</span> setTimeout.bind(<span class="literal">null</span>, func, delay);
-            }
-            <span class="keyword">return</span> func;
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resetState</span><span class="hljs-params">()</span> {</span>
+            actions = [];
+            interimActions = [];
+            actionIdx = <span class="hljs-number">0</span>;
+            numIterations = <span class="hljs-number">1</span>;
+            iterationIdx = <span class="hljs-number">0</span>;
+            finalDfd = <span class="hljs-keyword">new</span> options.Deferred();
+            killed = <span class="hljs-literal">false</span>;
         }</pre></div></div>
             
         </li>
@@ -396,13 +388,17 @@ actions can return more interim actions</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>Utility function to run a specified callback, potentially after a
-promise is resolved.</p>
+              <p>Return a function to be run after the specified delay</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">runAfterPromise</span><span class="params">(func, maybePromise)</span> {</span>
-            <span class="keyword">if</span> (isPromise(maybePromise)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDelayedFunction</span><span class="hljs-params">(func, delay)</span> {</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> delay === <span class="hljs-string">'number'</span> &amp;&amp; delay &gt; <span class="hljs-number">0</span>) {
+                debug(<span class="hljs-string">'Sleeping for '</span> + delay + <span class="hljs-string">'ms'</span>);
+                <span class="hljs-keyword">return</span> setTimeout.bind(<span class="hljs-literal">null</span>, func, delay);
+            }
+            <span class="hljs-keyword">return</span> func;
+        }</pre></div></div>
             
         </li>
         
@@ -413,24 +409,13 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>Defer step until the promise is resolved</p>
+              <p>Utility function to run a specified callback, potentially after a
+promise is resolved.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                debug(<span class="string">"Deferring next step until the promise is resolved"</span>);
-                maybePromise.always(func);
-            } <span class="keyword">else</span> <span class="keyword">if</span> (isArray(maybePromise)) {
-                <span class="keyword">if</span> (maybePromise.length &gt; <span class="number">0</span>) {
-                    debug(<span class="string">"Received back an array of interim actions, "</span> +
-                          <span class="string">"running them now: "</span>, maybePromise);
-                    interimActions.unshift(maybePromise);
-                }
-                func();
-            } <span class="keyword">else</span> {
-                debug(<span class="string">"Passing value through to next step: "</span>, maybePromise);
-                func(maybePromise);
-            }
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAfterPromise</span><span class="hljs-params">(func, maybePromise)</span> {</span>
+            <span class="hljs-keyword">if</span> (isPromise(maybePromise)) {</pre></div></div>
             
         </li>
         
@@ -441,12 +426,24 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>Execute a single step</p>
+              <p>Defer step until the promise is resolved</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">step</span><span class="params">(passThrough)</span> {</span>
-            <span class="keyword">var</span> nextAction, action, type, handler, retVal, delay, deferredStep;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                debug(<span class="hljs-string">"Deferring next step until the promise is resolved"</span>);
+                maybePromise.always(func);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isArray(maybePromise)) {
+                <span class="hljs-keyword">if</span> (maybePromise.length &gt; <span class="hljs-number">0</span>) {
+                    debug(<span class="hljs-string">"Received back an array of interim actions, "</span> +
+                          <span class="hljs-string">"running them now: "</span>, maybePromise);
+                    interimActions.unshift(maybePromise);
+                }
+                func();
+            } <span class="hljs-keyword">else</span> {
+                debug(<span class="hljs-string">"Passing value through to next step: "</span>, maybePromise);
+                func(maybePromise);
+            }
+        }</pre></div></div>
             
         </li>
         
@@ -457,14 +454,12 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>Did the user kill us?</p>
+              <p>Execute a single step</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (killed) {
-                debug(<span class="string">"was killed by user, exiting."</span>);
-                <span class="keyword">return</span>;
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">step</span><span class="hljs-params">(passThrough)</span> {</span>
+            <span class="hljs-keyword">var</span> nextAction, action, type, handler, retVal, delay, deferredStep;</pre></div></div>
             
         </li>
         
@@ -475,13 +470,14 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>Are we done with our actions?</p>
+              <p>Did the user kill us?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (actionIdx &gt;= actions.length) {
-
-                debug(<span class="string">"iteration "</span> + iterationIdx + <span class="string">" completed"</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (killed) {
+                debug(<span class="hljs-string">"was killed by user, exiting."</span>);
+                <span class="hljs-keyword">return</span>;
+            }</pre></div></div>
             
         </li>
         
@@ -492,14 +488,13 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>Did we have an iteration callback to run?</p>
+              <p>Are we done with our actions?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (<span class="keyword">typeof</span> iterationCb === <span class="string">'function'</span>) {
-                    debug(<span class="string">"Executing iteration callback"</span>);
-                    retVal = iterationCb(iterationIdx);
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (actionIdx &gt;= actions.length) {
+
+                debug(<span class="hljs-string">"iteration "</span> + iterationIdx + <span class="hljs-string">" completed"</span>);</pre></div></div>
             
         </li>
         
@@ -510,17 +505,14 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>Are we done?</p>
+              <p>Did we have an iteration callback to run?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (++iterationIdx &gt;= numIterations) {
-                    debug(<span class="string">"Done with iterations"</span>);
-                    runAfterPromise(finalDfd.resolve, retVal);
-                    <span class="keyword">return</span>;
-                }
-
-                debug(<span class="string">"Automator iteration "</span> + iterationIdx + <span class="string">" ready to start"</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> iterationCb === <span class="hljs-string">'function'</span>) {
+                    debug(<span class="hljs-string">"Executing iteration callback"</span>);
+                    retVal = iterationCb(iterationIdx);
+                }</pre></div></div>
             
         </li>
         
@@ -531,11 +523,17 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>Start back at the beginning</p>
+              <p>Are we done?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                actionIdx = <span class="number">0</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> (++iterationIdx &gt;= numIterations) {
+                    debug(<span class="hljs-string">"Done with iterations"</span>);
+                    runAfterPromise(finalDfd.resolve, retVal);
+                    <span class="hljs-keyword">return</span>;
+                }
+
+                debug(<span class="hljs-string">"Automator iteration "</span> + iterationIdx + <span class="hljs-string">" ready to start"</span>);</pre></div></div>
             
         </li>
         
@@ -546,11 +544,11 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>Prep our next iteration after a delay, if requested</p>
+              <p>Start back at the beginning</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                deferredStep = getDelayedFunction(step, options.iterationDelay);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                actionIdx = <span class="hljs-number">0</span>;</pre></div></div>
             
         </li>
         
@@ -561,14 +559,11 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <p>Run the next step after a potential promise is resolved</p>
+              <p>Prep our next iteration after a delay, if requested</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                runAfterPromise(deferredStep, retVal);
-
-                <span class="keyword">return</span>;
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                deferredStep = getDelayedFunction(step, options.iterationDelay);</pre></div></div>
             
         </li>
         
@@ -579,11 +574,14 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>Get the next action</p>
+              <p>Run the next step after a potential promise is resolved</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (interimActions.length &gt; <span class="number">0</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                runAfterPromise(deferredStep, retVal);
+
+                <span class="hljs-keyword">return</span>;
+            }</pre></div></div>
             
         </li>
         
@@ -594,11 +592,11 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
-              <p>Get from the top array in the stack</p>
+              <p>Get the next action</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                action = interimActions[<span class="number">0</span>].shift();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (interimActions.length &gt; <span class="hljs-number">0</span>) {</pre></div></div>
             
         </li>
         
@@ -609,15 +607,11 @@ promise is resolved.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
-              <p>If we just removed the last interim action from this top
-entry in the stack, pop off the empty array</p>
+              <p>Get from the top array in the stack</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="keyword">if</span> (interimActions[<span class="number">0</span>].length === <span class="number">0</span>) {
-                    interimActions.shift();
-                }
-            } <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                action = interimActions[<span class="hljs-number">0</span>].shift();</pre></div></div>
             
         </li>
         
@@ -627,6 +621,25 @@ entry in the stack, pop off the empty array</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>If we just removed the last interim action from this top
+entry in the stack, pop off the empty array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span> (interimActions[<span class="hljs-number">0</span>].length === <span class="hljs-number">0</span>) {
+                    interimActions.shift();
+                }
+            } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Increment after grab</p>
 
@@ -638,35 +651,17 @@ entry in the stack, pop off the empty array</p>
         </li>
         
         
-        <li id="section-36">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
-              </div>
-              <p>Peek ahead</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (interimActions.length &gt; <span class="number">0</span>) {</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p>We still have interims</p>
+              <p>Peek ahead</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                nextAction = interimActions[<span class="number">0</span>][<span class="number">0</span>];
-            } <span class="keyword">else</span> {
-                nextAction = actions[actionIdx];
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (interimActions.length &gt; <span class="hljs-number">0</span>) {</pre></div></div>
             
         </li>
         
@@ -677,11 +672,14 @@ entry in the stack, pop off the empty array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>Short circuit on bad actions</p>
+              <p>We still have interims</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (action == <span class="literal">null</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                nextAction = interimActions[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
+            } <span class="hljs-keyword">else</span> {
+                nextAction = actions[actionIdx];
+            }</pre></div></div>
             
         </li>
         
@@ -692,16 +690,11 @@ entry in the stack, pop off the empty array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p>Skip it and move on</p>
+              <p>Short circuit on bad actions</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                debug(<span class="string">"Skipping null action"</span>);
-                step();
-                <span class="keyword">return</span>;
-            }
-
-            debug(<span class="string">'Handling action: '</span> + action);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (action == <span class="hljs-literal">null</span>) {</pre></div></div>
             
         </li>
         
@@ -712,20 +705,16 @@ entry in the stack, pop off the empty array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
-              <p>Pass off to the apropriate handler</p>
+              <p>Skip it and move on</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            type = (<span class="keyword">typeof</span> action);
-            <span class="keyword">if</span>      (type === <span class="string">'number'</span>)   {
-                handler = options.doNumber;
-            } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">'string'</span>) {
-                handler = options.doString;
-            } <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">'function'</span>) {
-                handler = options.doFunction;
-            } <span class="keyword">else</span> {
-                <span class="keyword">throw</span> <span class="string">"Unsupported type!"</span>;
-            }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                debug(<span class="hljs-string">"Skipping null action"</span>);
+                step();
+                <span class="hljs-keyword">return</span>;
+            }
+
+            debug(<span class="hljs-string">'Handling action: '</span> + action);</pre></div></div>
             
         </li>
         
@@ -736,17 +725,19 @@ entry in the stack, pop off the empty array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <p>Don&#39;t front or back pad numbers with a delay,
-and don&#39;t delay at the end of the array</p>
+              <p>Pass off to the apropriate handler</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span> (type === <span class="string">'number'</span> ||
-                <span class="keyword">typeof</span> nextAction === <span class="string">'number'</span> ||
-                nextAction == <span class="literal">null</span>) {
-                delay = <span class="number">0</span>;
-            } <span class="keyword">else</span> {
-                delay = options.stepDelay;
+            <div class="content"><div class='highlight'><pre>            type = (<span class="hljs-keyword">typeof</span> action);
+            <span class="hljs-keyword">if</span>      (type === <span class="hljs-string">'number'</span>)   {
+                handler = options.doNumber;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'string'</span>) {
+                handler = options.doString;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'function'</span>) {
+                handler = options.doFunction;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">throw</span> <span class="hljs-string">"Unsupported type!"</span>;
             }</pre></div></div>
             
         </li>
@@ -758,11 +749,18 @@ and don&#39;t delay at the end of the array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>Prep our next step after a delay, if requested</p>
+              <p>Don’t front or back pad numbers with a delay,
+and don’t delay at the end of the array</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            deferredStep = getDelayedFunction(step, delay);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'number'</span> ||
+                <span class="hljs-keyword">typeof</span> nextAction === <span class="hljs-string">'number'</span> ||
+                nextAction == <span class="hljs-literal">null</span>) {
+                delay = <span class="hljs-number">0</span>;
+            } <span class="hljs-keyword">else</span> {
+                delay = options.stepDelay;
+            }</pre></div></div>
             
         </li>
         
@@ -773,14 +771,11 @@ and don&#39;t delay at the end of the array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>Run the handler, then move onto the next step, potentially
-after a returned promise resolution</p>
+              <p>Prep our next step after a delay, if requested</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            retVal = handler.call(<span class="literal">null</span>, action, passThrough);
-            runAfterPromise(deferredStep, retVal);
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            deferredStep = getDelayedFunction(step, delay);</pre></div></div>
             
         </li>
         
@@ -791,21 +786,14 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>Internal function to expand repeated string functionality</p>
+              <p>Run the handler, then move onto the next step, potentially
+after a returned promise resolution</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">expandActions</span><span class="params">(arr)</span> {</span>
-            <span class="keyword">var</span> expanded = [],
-                action,
-                matches,
-                num,
-                i = -<span class="number">1</span>,
-                len = arr.length;
-
-            <span class="keyword">while</span> (++i &lt; len) {
-                action = arr[i];
-                <span class="keyword">if</span> (<span class="keyword">typeof</span> action === <span class="string">'string'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            retVal = handler.call(<span class="hljs-literal">null</span>, action, passThrough);
+            runAfterPromise(deferredStep, retVal);
+        }</pre></div></div>
             
         </li>
         
@@ -816,14 +804,21 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
-              <p>Look for trailing ...x<num></p>
+              <p>Internal function to expand repeated string functionality</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                    matches = action.match(<span class="regexp">/(.*)+x(\d+)$/</span>);
-                    <span class="keyword">if</span> (matches &amp;&amp; matches.length === <span class="number">3</span>) {
-                        action = matches[<span class="number">1</span>];
-                        num = parseInt(matches[<span class="number">2</span>], <span class="number">10</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">expandActions</span><span class="hljs-params">(arr)</span> {</span>
+            <span class="hljs-keyword">var</span> expanded = [],
+                action,
+                matches,
+                num,
+                i = -<span class="hljs-number">1</span>,
+                len = arr.length;
+
+            <span class="hljs-keyword">while</span> (++i &lt; len) {
+                action = arr[i];
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> action === <span class="hljs-string">'string'</span>) {</pre></div></div>
             
         </li>
         
@@ -834,14 +829,14 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
-              <p>Add n duplicates of this string and continue</p>
+              <p>Look for trailing …x<num></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                        <span class="keyword">while</span> (num-- &gt; <span class="number">0</span>) { expanded.push(action); }
-                        <span class="keyword">continue</span>;
-                    }
-                }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    matches = action.match(<span class="hljs-regexp">/(.*)+x(\d+)$/</span>);
+                    <span class="hljs-keyword">if</span> (matches &amp;&amp; matches.length === <span class="hljs-number">3</span>) {
+                        action = matches[<span class="hljs-number">1</span>];
+                        num = <span class="hljs-built_in">parseInt</span>(matches[<span class="hljs-number">2</span>], <span class="hljs-number">10</span>);</pre></div></div>
             
         </li>
         
@@ -852,15 +847,14 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
-              <p>Copy non-x<num> strings and any non strings straight over</p>
+              <p>Add n duplicates of this string and continue</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                expanded.push(action);
-            }
-
-            <span class="keyword">return</span> expanded;
-        }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        <span class="hljs-keyword">while</span> (num-- &gt; <span class="hljs-number">0</span>) { expanded.push(action); }
+                        <span class="hljs-keyword">continue</span>;
+                    }
+                }</pre></div></div>
             
         </li>
         
@@ -868,12 +862,18 @@ after a returned promise resolution</p>
         <li id="section-48">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
-              <h2>Public functions</h2>
+              <p>Copy non-x<num> strings and any non strings straight over</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>                expanded.push(action);
+            }
+
+            <span class="hljs-keyword">return</span> expanded;
+        }</pre></div></div>
             
         </li>
         
@@ -884,10 +884,9 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
-              
+              <h2 id="public-functions">Public functions</h2>
+
             </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">this</span>.automate = <span class="function"><span class="keyword">function</span> <span class="params">(arr, num, cb)</span> {</span></pre></div></div>
             
         </li>
         
@@ -898,11 +897,11 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
-              <p>TODO: Validate input</p>
-
+              
             </div>
             
-            <div class="content"><div class='highlight'><pre>            num = (<span class="keyword">typeof</span> num === <span class="string">'number'</span>) ? num : <span class="number">1</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+        <span class="hljs-keyword">this</span>.automate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr, num, cb)</span> {</span></pre></div></div>
             
         </li>
         
@@ -913,11 +912,11 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
-              <p>Wipe the slate clean</p>
+              <p>TODO: Validate input</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            resetState();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            num = (<span class="hljs-keyword">typeof</span> num === <span class="hljs-string">'number'</span>) ? num : <span class="hljs-number">1</span>;</pre></div></div>
             
         </li>
         
@@ -928,11 +927,11 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
-              <p>Create an expanded array of actions</p>
+              <p>Wipe the slate clean</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            actions = expandActions(arr);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            resetState();</pre></div></div>
             
         </li>
         
@@ -943,11 +942,11 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
-              <p>Store off the number of iterations</p>
+              <p>Create an expanded array of actions</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            numIterations = num;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            actions = expandActions(arr);</pre></div></div>
             
         </li>
         
@@ -958,11 +957,11 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
-              <p>Store off the iteration callback function</p>
+              <p>Store off the number of iterations</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            iterationCb = cb;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            numIterations = num;</pre></div></div>
             
         </li>
         
@@ -973,14 +972,11 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
-              <p>Go!</p>
+              <p>Store off the iteration callback function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            step();
-
-            <span class="keyword">return</span> finalDfd.promise();
-        };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            iterationCb = cb;</pre></div></div>
             
         </li>
         
@@ -991,15 +987,14 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
-              <p>Kill the automator</p>
+              <p>Go!</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">this</span>.kill = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-            killed = <span class="literal">true</span>;
-        };
+            <div class="content"><div class='highlight'><pre>            step();
 
-    }</pre></div></div>
+            <span class="hljs-keyword">return</span> finalDfd.promise();
+        };</pre></div></div>
             
         </li>
         
@@ -1010,57 +1005,15 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
-              <p>Supported string -&gt; keyCode map</p>
+              <p>Kill the automator</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.keyCodeMap = {
-        <span class="string">'0'</span>: <span class="number">48</span>,
-        <span class="string">'1'</span>: <span class="number">49</span>,
-        <span class="string">'2'</span>: <span class="number">50</span>,
-        <span class="string">'3'</span>: <span class="number">51</span>,
-        <span class="string">'4'</span>: <span class="number">52</span>,
-        <span class="string">'5'</span>: <span class="number">53</span>,
-        <span class="string">'6'</span>: <span class="number">54</span>,
-        <span class="string">'7'</span>: <span class="number">55</span>,
-        <span class="string">'8'</span>: <span class="number">56</span>,
-        <span class="string">'9'</span>: <span class="number">57</span>,
-        <span class="string">'a'</span>: <span class="number">65</span>,
-        <span class="string">'b'</span>: <span class="number">66</span>,
-        <span class="string">'c'</span>: <span class="number">67</span>,
-        <span class="string">'d'</span>: <span class="number">68</span>,
-        <span class="string">'e'</span>: <span class="number">69</span>,
-        <span class="string">'f'</span>: <span class="number">70</span>,
-        <span class="string">'g'</span>: <span class="number">71</span>,
-        <span class="string">'h'</span>: <span class="number">72</span>,
-        <span class="string">'i'</span>: <span class="number">73</span>,
-        <span class="string">'j'</span>: <span class="number">74</span>,
-        <span class="string">'k'</span>: <span class="number">75</span>,
-        <span class="string">'l'</span>: <span class="number">76</span>,
-        <span class="string">'m'</span>: <span class="number">77</span>,
-        <span class="string">'n'</span>: <span class="number">78</span>,
-        <span class="string">'o'</span>: <span class="number">79</span>,
-        <span class="string">'p'</span>: <span class="number">80</span>,
-        <span class="string">'q'</span>: <span class="number">81</span>,
-        <span class="string">'r'</span>: <span class="number">82</span>,
-        <span class="string">'s'</span>: <span class="number">83</span>,
-        <span class="string">'t'</span>: <span class="number">84</span>,
-        <span class="string">'u'</span>: <span class="number">85</span>,
-        <span class="string">'v'</span>: <span class="number">86</span>,
-        <span class="string">'w'</span>: <span class="number">87</span>,
-        <span class="string">'x'</span>: <span class="number">88</span>,
-        <span class="string">'y'</span>: <span class="number">89</span>,
-        <span class="string">'z'</span>: <span class="number">90</span>,
-        <span class="string">'left'</span>: <span class="number">37</span>,
-        <span class="string">'up'</span>: <span class="number">38</span>,
-        <span class="string">'right'</span>: <span class="number">39</span>,
-        <span class="string">'down'</span>: <span class="number">40</span>,
-        <span class="string">'enter'</span>: <span class="number">13</span>,
-        <span class="string">'tab'</span>: <span class="number">9</span>,
-        <span class="string">'ctrl'</span>: <span class="number">17</span>,
-        <span class="string">'esc'</span>: <span class="number">27</span>,
-        <span class="string">'space'</span>: <span class="number">32</span>
-    };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">this</span>.kill = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            killed = <span class="hljs-literal">true</span>;
+        };
+
+    }</pre></div></div>
             
         </li>
         
@@ -1071,14 +1024,56 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
-              <p>Default handling of numbers - sleep for specified milliseconds</p>
+              <p>Supported string -&gt; keyCode map</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.doNumber = <span class="function"><span class="keyword">function</span> <span class="params">(n, passThrough)</span> {</span>
-        <span class="keyword">var</span> dfd = <span class="keyword">new</span> Automator.MiniDeferred();
-        setTimeout(dfd.resolve.bind(dfd, passThrough), n);
-        <span class="keyword">return</span> dfd.promise();
+            <div class="content"><div class='highlight'><pre>    Automator.keyCodeMap = {
+        <span class="hljs-string">'0'</span>: <span class="hljs-number">48</span>,
+        <span class="hljs-string">'1'</span>: <span class="hljs-number">49</span>,
+        <span class="hljs-string">'2'</span>: <span class="hljs-number">50</span>,
+        <span class="hljs-string">'3'</span>: <span class="hljs-number">51</span>,
+        <span class="hljs-string">'4'</span>: <span class="hljs-number">52</span>,
+        <span class="hljs-string">'5'</span>: <span class="hljs-number">53</span>,
+        <span class="hljs-string">'6'</span>: <span class="hljs-number">54</span>,
+        <span class="hljs-string">'7'</span>: <span class="hljs-number">55</span>,
+        <span class="hljs-string">'8'</span>: <span class="hljs-number">56</span>,
+        <span class="hljs-string">'9'</span>: <span class="hljs-number">57</span>,
+        <span class="hljs-string">'a'</span>: <span class="hljs-number">65</span>,
+        <span class="hljs-string">'b'</span>: <span class="hljs-number">66</span>,
+        <span class="hljs-string">'c'</span>: <span class="hljs-number">67</span>,
+        <span class="hljs-string">'d'</span>: <span class="hljs-number">68</span>,
+        <span class="hljs-string">'e'</span>: <span class="hljs-number">69</span>,
+        <span class="hljs-string">'f'</span>: <span class="hljs-number">70</span>,
+        <span class="hljs-string">'g'</span>: <span class="hljs-number">71</span>,
+        <span class="hljs-string">'h'</span>: <span class="hljs-number">72</span>,
+        <span class="hljs-string">'i'</span>: <span class="hljs-number">73</span>,
+        <span class="hljs-string">'j'</span>: <span class="hljs-number">74</span>,
+        <span class="hljs-string">'k'</span>: <span class="hljs-number">75</span>,
+        <span class="hljs-string">'l'</span>: <span class="hljs-number">76</span>,
+        <span class="hljs-string">'m'</span>: <span class="hljs-number">77</span>,
+        <span class="hljs-string">'n'</span>: <span class="hljs-number">78</span>,
+        <span class="hljs-string">'o'</span>: <span class="hljs-number">79</span>,
+        <span class="hljs-string">'p'</span>: <span class="hljs-number">80</span>,
+        <span class="hljs-string">'q'</span>: <span class="hljs-number">81</span>,
+        <span class="hljs-string">'r'</span>: <span class="hljs-number">82</span>,
+        <span class="hljs-string">'s'</span>: <span class="hljs-number">83</span>,
+        <span class="hljs-string">'t'</span>: <span class="hljs-number">84</span>,
+        <span class="hljs-string">'u'</span>: <span class="hljs-number">85</span>,
+        <span class="hljs-string">'v'</span>: <span class="hljs-number">86</span>,
+        <span class="hljs-string">'w'</span>: <span class="hljs-number">87</span>,
+        <span class="hljs-string">'x'</span>: <span class="hljs-number">88</span>,
+        <span class="hljs-string">'y'</span>: <span class="hljs-number">89</span>,
+        <span class="hljs-string">'z'</span>: <span class="hljs-number">90</span>,
+        <span class="hljs-string">'left'</span>: <span class="hljs-number">37</span>,
+        <span class="hljs-string">'up'</span>: <span class="hljs-number">38</span>,
+        <span class="hljs-string">'right'</span>: <span class="hljs-number">39</span>,
+        <span class="hljs-string">'down'</span>: <span class="hljs-number">40</span>,
+        <span class="hljs-string">'enter'</span>: <span class="hljs-number">13</span>,
+        <span class="hljs-string">'tab'</span>: <span class="hljs-number">9</span>,
+        <span class="hljs-string">'ctrl'</span>: <span class="hljs-number">17</span>,
+        <span class="hljs-string">'esc'</span>: <span class="hljs-number">27</span>,
+        <span class="hljs-string">'space'</span>: <span class="hljs-number">32</span>
     };</pre></div></div>
             
         </li>
@@ -1090,12 +1085,14 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
-              <p>Default handling of functions - passthrough execution</p>
+              <p>Default handling of numbers - sleep for specified milliseconds</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.doFunction = <span class="function"><span class="keyword">function</span> <span class="params">(func, passThrough)</span> {</span>
-        <span class="keyword">return</span> func.call(<span class="literal">null</span>, passThrough);
+            <div class="content"><div class='highlight'><pre>    Automator.doNumber = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n, passThrough)</span> {</span>
+        <span class="hljs-keyword">var</span> dfd = <span class="hljs-keyword">new</span> Automator.MiniDeferred();
+        setTimeout(dfd.resolve.bind(dfd, passThrough), n);
+        <span class="hljs-keyword">return</span> dfd.promise();
     };</pre></div></div>
             
         </li>
@@ -1107,11 +1104,13 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
-              <p>Utility function for simulating a key event</p>
+              <p>Default handling of functions - passthrough execution</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.simulateKeyEvent = <span class="function"><span class="keyword">function</span> <span class="params">(type, keyCode)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Automator.doFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func, passThrough)</span> {</span>
+        <span class="hljs-keyword">return</span> func.call(<span class="hljs-literal">null</span>, passThrough);
+    };</pre></div></div>
             
         </li>
         
@@ -1122,28 +1121,11 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
-              <p>From <a href="http://stackoverflow.com/questions/596481/simulate-javascript-key-events">http://stackoverflow.com/questions/596481/simulate-javascript-key-events</a></p>
+              <p>Utility function for simulating a key event</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> eventObj = document.createEventObject ?
-                       document.createEventObject() :
-                       document.createEvent(<span class="string">"Events"</span>);
-
-
-        <span class="keyword">if</span> (<span class="keyword">typeof</span> eventObj.initEvent === <span class="string">'function'</span>) {
-            eventObj.initEvent(<span class="string">"keydown"</span>, <span class="literal">true</span>, <span class="literal">true</span>);
-        }
-
-        eventObj.keyCode = keyCode;
-        eventObj.which = keyCode;
-
-        <span class="keyword">if</span> (<span class="keyword">typeof</span> document.dispatchEvent === <span class="string">'function'</span>) {
-            document.dispatchEvent(eventObj);
-        } <span class="keyword">else</span> {
-            document.fireEvent(<span class="string">"onkeydown"</span>, eventObj);
-        }
-    };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Automator.simulateKeyEvent = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, keyCode)</span> {</span></pre></div></div>
             
         </li>
         
@@ -1154,16 +1136,27 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
-              <p>Default handling of strings - simulate keypress of the specified key</p>
+              <p>From <a href="http://stackoverflow.com/questions/596481/simulate-javascript-key-events">http://stackoverflow.com/questions/596481/simulate-javascript-key-events</a></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.doString = <span class="function"><span class="keyword">function</span> <span class="params">(str, passThrough)</span> {</span>
-        <span class="keyword">var</span> keyCode = Automator.keyCodeMap[str];
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> eventObj = document.createEventObject ?
+                       document.createEventObject() :
+                       document.createEvent(<span class="hljs-string">"Events"</span>);
 
-        <span class="keyword">if</span> (<span class="keyword">typeof</span> keyCode !== <span class="string">'number'</span>) { <span class="keyword">return</span>; }
 
-        <span class="keyword">return</span> Automator.simulateKeyEvent(<span class="string">"keydown"</span>, keyCode);
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> eventObj.initEvent === <span class="hljs-string">'function'</span>) {
+            eventObj.initEvent(<span class="hljs-string">"keydown"</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+        }
+
+        eventObj.keyCode = keyCode;
+        eventObj.which = keyCode;
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> document.dispatchEvent === <span class="hljs-string">'function'</span>) {
+            document.dispatchEvent(eventObj);
+        } <span class="hljs-keyword">else</span> {
+            document.fireEvent(<span class="hljs-string">"onkeydown"</span>, eventObj);
+        }
     };</pre></div></div>
             
         </li>
@@ -1175,65 +1168,16 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
-              <p>No default handling of objects</p>
+              <p>Default handling of strings - simulate keypress of the specified key</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Automator.doObject = <span class="function"><span class="keyword">function</span> <span class="params">(obj, passThrough)</span> {</span>};
+            <div class="content"><div class='highlight'><pre>    Automator.doString = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str, passThrough)</span> {</span>
+        <span class="hljs-keyword">var</span> keyCode = Automator.keyCodeMap[str];
 
-    Automator.MiniDeferred = <span class="function"><span class="keyword">function</span> <span class="title">MiniDeferred</span><span class="params">()</span> {</span>
-      <span class="keyword">var</span> callbacks = [],
-          currentState = <span class="number">0</span>,
-          currentArgs;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> keyCode !== <span class="hljs-string">'number'</span>) { <span class="hljs-keyword">return</span>; }
 
-      <span class="function"><span class="keyword">function</span> <span class="title">go</span><span class="params">()</span> {</span>
-        <span class="keyword">var</span> cb;
-        <span class="keyword">while</span> (callbacks.length &gt; <span class="number">0</span>) {
-          cb = callbacks.shift();
-          <span class="keyword">if</span> (cb.state === currentState) {
-            cb.func.apply(<span class="keyword">this</span>, currentArgs);
-          }
-        }
-      }
-
-      <span class="function"><span class="keyword">function</span> <span class="title">addCallback</span><span class="params">(type, async, func)</span> {</span>
-        <span class="keyword">if</span> (<span class="keyword">typeof</span> func === <span class="string">'function'</span>) {
-          <span class="keyword">var</span> cb = { state: type, async: async, func: func };
-          callbacks.push(cb);
-          <span class="keyword">if</span> (currentState !== <span class="number">0</span>) { go(); }
-        }
-        <span class="keyword">return</span> <span class="keyword">this</span>;
-      }
-
-      <span class="function"><span class="keyword">function</span> <span class="title">changeState</span><span class="params">(s)</span> {</span>
-        <span class="keyword">if</span> (currentState !== <span class="number">0</span>) { <span class="keyword">return</span>; }
-        currentState = s;
-        currentArgs = Array.prototype.slice.call(arguments, <span class="number">1</span>);
-        go();
-        <span class="keyword">return</span> <span class="keyword">this</span>;
-      }
-
-      <span class="keyword">this</span>.resolve = changeState.bind(<span class="keyword">this</span>, <span class="number">1</span>);
-      <span class="keyword">this</span>.reject = changeState.bind(<span class="keyword">this</span>, <span class="number">2</span>);
-
-      <span class="keyword">this</span>.promise = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
-        <span class="keyword">return</span> {
-          done: <span class="keyword">this</span>.done.bind(<span class="keyword">this</span>),
-          fail: <span class="keyword">this</span>.fail.bind(<span class="keyword">this</span>),
-          always: <span class="keyword">this</span>.always.bind(<span class="keyword">this</span>)
-        };
-      };
-
-      <span class="keyword">this</span>.done = addCallback.bind(<span class="keyword">this</span>, <span class="number">1</span>, <span class="literal">false</span>);
-      <span class="keyword">this</span>.fail = addCallback.bind(<span class="keyword">this</span>, <span class="number">2</span>, <span class="literal">false</span>);
-
-      <span class="keyword">this</span>.always = <span class="function"><span class="keyword">function</span> <span class="params">(func)</span> {</span>
-        <span class="keyword">this</span>.done.call(<span class="keyword">this</span>, func);
-        <span class="keyword">this</span>.fail.call(<span class="keyword">this</span>, func);
-        <span class="keyword">return</span> <span class="keyword">this</span>;
-      };
-
-      <span class="keyword">return</span> <span class="keyword">this</span>;
+        <span class="hljs-keyword">return</span> Automator.simulateKeyEvent(<span class="hljs-string">"keydown"</span>, keyCode);
     };</pre></div></div>
             
         </li>
@@ -1245,14 +1189,84 @@ after a returned promise resolution</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
+              <p>No default handling of objects</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    Automator.doObject = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, passThrough)</span> {</span>};
+
+    Automator.MiniDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MiniDeferred</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">var</span> callbacks = [],
+          currentState = <span class="hljs-number">0</span>,
+          currentArgs;
+
+      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">go</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> cb;
+        <span class="hljs-keyword">while</span> (callbacks.length &gt; <span class="hljs-number">0</span>) {
+          cb = callbacks.shift();
+          <span class="hljs-keyword">if</span> (cb.state === currentState) {
+            cb.func.apply(<span class="hljs-keyword">this</span>, currentArgs);
+          }
+        }
+      }
+
+      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addCallback</span><span class="hljs-params">(type, async, func)</span> {</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> func === <span class="hljs-string">'function'</span>) {
+          <span class="hljs-keyword">var</span> cb = { state: type, async: async, func: func };
+          callbacks.push(cb);
+          <span class="hljs-keyword">if</span> (currentState !== <span class="hljs-number">0</span>) { go(); }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+      }
+
+      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">changeState</span><span class="hljs-params">(s)</span> {</span>
+        <span class="hljs-keyword">if</span> (currentState !== <span class="hljs-number">0</span>) { <span class="hljs-keyword">return</span>; }
+        currentState = s;
+        currentArgs = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
+        go();
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+      }
+
+      <span class="hljs-keyword">this</span>.resolve = changeState.bind(<span class="hljs-keyword">this</span>, <span class="hljs-number">1</span>);
+      <span class="hljs-keyword">this</span>.reject = changeState.bind(<span class="hljs-keyword">this</span>, <span class="hljs-number">2</span>);
+
+      <span class="hljs-keyword">this</span>.promise = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">return</span> {
+          done: <span class="hljs-keyword">this</span>.done.bind(<span class="hljs-keyword">this</span>),
+          fail: <span class="hljs-keyword">this</span>.fail.bind(<span class="hljs-keyword">this</span>),
+          always: <span class="hljs-keyword">this</span>.always.bind(<span class="hljs-keyword">this</span>)
+        };
+      };
+
+      <span class="hljs-keyword">this</span>.done = addCallback.bind(<span class="hljs-keyword">this</span>, <span class="hljs-number">1</span>, <span class="hljs-literal">false</span>);
+      <span class="hljs-keyword">this</span>.fail = addCallback.bind(<span class="hljs-keyword">this</span>, <span class="hljs-number">2</span>, <span class="hljs-literal">false</span>);
+
+      <span class="hljs-keyword">this</span>.always = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func)</span> {</span>
+        <span class="hljs-keyword">this</span>.done.call(<span class="hljs-keyword">this</span>, func);
+        <span class="hljs-keyword">this</span>.fail.call(<span class="hljs-keyword">this</span>, func);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+      };
+
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
               <p>Default options</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    Automator.defaults = {
-        debug: <span class="literal">false</span>,
-        stepDelay: <span class="number">0</span>,
-        iterationDelay: <span class="number">0</span>,
+        debug: <span class="hljs-literal">false</span>,
+        stepDelay: <span class="hljs-number">0</span>,
+        iterationDelay: <span class="hljs-number">0</span>,
         Deferred: Automator.MiniDeferred,
         doNumber: Automator.doNumber,
         doFunction: Automator.doFunction,
@@ -1260,7 +1274,7 @@ after a returned promise resolution</p>
         doObject: Automator.doObject
     };
 
-    <span class="keyword">return</span> Automator;
+    <span class="hljs-keyword">return</span> Automator;
 
 }));</pre></div></div>
             

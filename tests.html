@@ -12,16 +12,41 @@
   <script src="resources/jquery-1.10.2.min.js"></script>
   <script src="automator.js"></script>
   <script>
+
+      // PhantomJS does not support bind
+      if (!Function.prototype.bind) {
+        Function.prototype.bind = function (oThis) {
+          if (typeof this !== "function") {
+            // closest thing possible to the ECMAScript 5
+            // internal IsCallable function
+            throw new TypeError("Function.prototype.bind - what is trying " +
+                                "to be bound is not callable");
+          }
+
+          var aArgs = Array.prototype.slice.call(arguments, 1),
+              fToBind = this,
+              fNOP = function () {},
+              fBound = function () {
+                var args = aArgs.concat(Array.prototype.slice.call(arguments));
+                return fToBind.apply(this, args);
+              };
+
+          fNOP.prototype = this.prototype;
+          fBound.prototype = new fNOP();
+
+          return fBound;
+        };
+      }
+
       var DELAY = 200;
 
       asyncTest("Test standard number (timeout) handling", function () {
-          var a = new Automator({ debug: true }),
+          var a = new Automator(),
               count = 0;
 
           function inc() { count++; }
 
           function verify (num) {
-              console.log("Verifying " + count + " === " + num);
               strictEqual(count, num, "Ensure we have run the appropriate number of steps. ");
           }
 
@@ -178,13 +203,11 @@
           function reset() { totalCount += count; count = 0; }
 
           function verify (num) {
-              console.log("verify");
               strictEqual(count, num,
                           "Ensure we have run the appropriate number of steps.");
           }
 
           function iterCb (idx) {
-              console.log("iterCb " + idx);
               strictEqual(idx, iterCount++,
                           "Ensure we run the iteraton cb with the right index");
               var dfd = new $.Deferred();
@@ -193,7 +216,6 @@
           }
 
           function verifyTotal(num) {
-              console.log("Verifying total " + num);
               strictEqual(totalCount, num, "Ensure we repeated the array multiple times");
           }
 
@@ -242,8 +264,7 @@
       });
 
       asyncTest("Test stepDelay/iterationDelay", function () {
-          var a = new Automator({ debug: true,
-                                  stepDelay: DELAY,
+          var a = new Automator({ stepDelay: DELAY,
                                   iterationDelay: DELAY }),
               count = 0;
 

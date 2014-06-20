@@ -1,5 +1,5 @@
 /* ========================================================================
- * Automator.js v0.1
+ * Automator.js v0.1.1
  * A minimal JavaScript library for automating practically anything
  * in Javascript.
  *

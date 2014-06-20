@@ -1,13 +1,14 @@
 {
   "name": "automator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A minimal JavaScript library for automating practically anything",
   "main": "automator.min.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp build",
+    "doc": "gulp docs"
   },
   "repository": {
     "type": "git",
@@ -26,11 +27,10 @@
   },
   "homepage": "https://github.com/brophdawg11/Automator.js",
   "devDependencies": {
-      "docco": "^0.6.x",
-      "uglify-js": "^2.4.x"
-  },
-  "scripts": {
-      "build": "uglifyjs automator.js -mo automator.min.js",
-      "doc": "docco automator.js"
+    "gulp-rename": "~1.2.0",
+    "gulp-uglify": "~0.3.0",
+    "gulp-docco": "0.0.4",
+    "gulp-bump": "~0.1.8",
+    "gulp-qunit": "~0.3.3"
   }
 }
